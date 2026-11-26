@@ -503,9 +503,14 @@
 
     void main() {
       vec2 uv = vUv;
-      uv.x *= uRes.x / max(uRes.y, 1.0);
+      float aspect = uRes.x / max(uRes.y, 1.0);
+      uv.x *= aspect;
 
-      vec3 ro = vec3(0.0, 0.0, 4.72);
+      // Auto-adapt camera distance on narrow portrait phone canvases so 3D models never clip
+      float camDist = (aspect < 1.15)
+        ? mix(5.85, 4.72, clamp((aspect - 0.65) / 0.50, 0.0, 1.0))
+        : 4.72;
+      vec3 ro = vec3(0.0, 0.0, camDist);
       vec3 rd = normalize(vec3(uv, -1.72));
 
       float pitch = uRot.y + uScrollTilt;
@@ -668,7 +673,20 @@
 
     const host = canvas.parentElement || canvas;
 
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touchAxis = ""; // "" | "x" (rotate 3D) | "y" (scroll page)
+
     host.addEventListener("pointerdown", (e) => {
+      if (e.pointerType === "touch") {
+        touchStartX = e.clientX;
+        touchStartY = e.clientY;
+        state.lastX = e.clientX;
+        state.lastY = e.clientY;
+        touchAxis = "";
+        state.dragging = true;
+        return;
+      }
       state.dragging = true;
       state.lastX = e.clientX;
       state.lastY = e.clientY;
@@ -681,6 +699,22 @@
         const dy = e.clientY - state.lastY;
         state.lastX = e.clientX;
         state.lastY = e.clientY;
+
+        if (e.pointerType === "touch") {
+          if (!touchAxis) {
+            const adx = Math.abs(e.clientX - touchStartX);
+            const ady = Math.abs(e.clientY - touchStartY);
+            if (adx > 6 || ady > 6) {
+              touchAxis = adx >= ady ? "x" : "y";
+            } else {
+              return;
+            }
+          }
+          if (touchAxis === "y") return; // Yield smoothly to native vertical page scroll
+          state.baseRotX -= dx * 0.013;
+          return;
+        }
+
         state.baseRotX -= dx * 0.0105;
         state.baseRotY = Math.max(-1.18, Math.min(1.18, state.baseRotY + dy * 0.0085));
       } else if (matchMedia("(pointer: fine)").matches) {
@@ -706,6 +740,7 @@
 
     const release = () => {
       state.dragging = false;
+      touchAxis = "";
     };
     host.addEventListener("pointerup", release);
     host.addEventListener("pointercancel", release);
@@ -815,7 +850,8 @@
 
       function resize() {
         const rect = canvas.getBoundingClientRect();
-        const dpr = Math.min(window.devicePixelRatio || 1, 1.35);
+        const maxDpr = window.innerWidth <= 768 ? 1.0 : 1.35;
+        const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
         const w = Math.max(2, Math.round(rect.width * dpr));
         const h = Math.max(2, Math.round(rect.height * dpr));
         if (canvas.width !== w || canvas.height !== h) {

@@ -39,6 +39,7 @@ html {
   scroll-behavior: smooth;
   scroll-padding-top: 32px;
   overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -123,12 +124,12 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(46px, 5.2vw, 76px);
+  font-size: clamp(36px, 5.2vw, 76px);
   line-height: 1.08;
 }
 
 h2 {
-  font-size: clamp(34px, 4vw, 58px);
+  font-size: clamp(28px, 4vw, 58px);
   line-height: 1.14;
 }
 
@@ -459,6 +460,7 @@ main,
   height: clamp(520px, 46vw, 680px);
   overflow: visible;
   cursor: grab;
+  touch-action: pan-y;
 }
 .hero .reactor-plate:active {
   cursor: grabbing;
@@ -915,6 +917,7 @@ main,
   height: 550px;
   isolation: isolate;
   cursor: grab;
+  touch-action: pan-y;
 }
 .model-stage:active {
   cursor: grabbing;
@@ -1883,24 +1886,38 @@ td.selected-col {
 }
 
 @media (max-width: 960px) {
+  .nav {
+    min-height: 80px;
+    gap: 16px;
+  }
   .menu-toggle {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     font-size: 14px;
+    min-height: 44px;
+    padding: 6px 2px;
+    flex-shrink: 0;
   }
   .nav-links {
     display: none;
     position: absolute;
-    top: 88px;
+    top: 76px;
     left: var(--gutter);
     right: var(--gutter);
+    z-index: 40;
     background: var(--surface-raised);
     padding: 18px 22px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 6px;
     border: 1px solid var(--line-strong);
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.72);
+  }
+  .nav-links a {
+    width: 100%;
+    padding-block: 11px;
+    font-size: 15px;
   }
   .nav.menu-open .nav-links {
     display: flex;
@@ -1909,7 +1926,8 @@ td.selected-col {
   .hero {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 20px;
+    padding-top: 8px;
   }
   .hero h1 {
     order: 1;
@@ -1919,7 +1937,7 @@ td.selected-col {
   .hero .reactor-plate {
     order: 2;
     width: 100%;
-    height: clamp(320px, 68vw, 440px);
+    height: clamp(300px, 78vw, 430px);
   }
   .hero-letter {
     order: 3;
@@ -1945,18 +1963,63 @@ td.selected-col {
     min-height: 0;
     max-height: none;
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 24px;
   }
   .story-progress,
   .story-instruction {
     display: none;
   }
   .model-stage {
-    height: clamp(330px, 66vw, 480px);
+    display: flex;
+    flex-direction: column;
+    height: auto;
+  }
+  .model-stage .webgl-stage-canvas {
+    height: clamp(280px, 78vw, 420px);
   }
   .stage-marker {
+    position: static;
+    margin-top: 8px;
     flex-wrap: wrap;
-    row-gap: 6px;
+    align-items: center;
+    gap: 10px 12px;
+  }
+  .hardware-copy {
+    display: flex;
+    flex-direction: column;
+  }
+  .hardware-tabs {
+    order: -1;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+    margin-top: 0;
+    margin-bottom: 22px;
+  }
+  .hardware-tab {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 4px;
+    min-height: 58px;
+    padding: 10px 6px;
+    border-left: 0;
+    border-bottom: 2px solid transparent;
+    background: var(--surface);
+  }
+  .hardware-tab[aria-pressed="true"] {
+    border-left: 0;
+    border-bottom: 2px solid var(--tab-accent, var(--signal));
+  }
+  .hardware-tab .tab-brand {
+    flex-direction: column;
+    gap: 5px;
+    font-size: 12.5px;
+    line-height: 1.25;
+  }
+  .hardware-tab > span + span {
+    display: none;
   }
   #part-description {
     min-height: 0;
@@ -1975,33 +2038,213 @@ td.selected-col {
   .questions,
   .closing-inner {
     grid-template-columns: 1fr;
-    gap: 36px;
+    gap: 32px;
   }
   .ratio-cards {
     grid-template-columns: 1fr 1fr;
-    gap: 18px;
+    gap: 16px;
   }
 
   .showcase-head,
   .config-reason {
     flex-direction: column;
     align-items: flex-start;
-    gap: 18px;
+    gap: 16px;
   }
 
+  .map-head {
+    display: none;
+  }
   .map-row {
     grid-template-columns: 1fr;
-    gap: 8px;
+    gap: 10px;
+    padding-block: 16px;
   }
   .map-row svg {
     display: none;
   }
   .map-row div:last-child {
     text-align: left;
+    border-left: 2px solid var(--signal);
+    padding-left: 12px;
   }
   .roadmap li {
     grid-template-columns: 1fr;
     gap: 6px;
+  }
+  .wb-code {
+    overflow-x: auto;
+    font-size: 12px;
+  }
+  .footer {
+    padding-bottom: calc(44px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* Dedicated Small-Phone Ergonomics (360px - 600px portrait screens) */
+@media (max-width: 600px) {
+  :root {
+    --gutter: 18px;
+  }
+  body {
+    font-size: 15px;
+    line-height: 1.72;
+  }
+  .optical-ribbon {
+    opacity: 0.45;
+  }
+  .intro-mark {
+    padding-inline: 20px;
+    text-align: center;
+  }
+  .intro-prism {
+    width: 96px;
+    height: 96px;
+  }
+  .intro-kicker {
+    font-size: 11px;
+    letter-spacing: 0.2em;
+  }
+  .intro-sub {
+    font-size: 20px;
+  }
+  .nav {
+    min-height: 70px;
+    gap: 10px;
+  }
+  .brand {
+    font-size: clamp(16.5px, 4.7vw, 21px);
+  }
+  .nav-links {
+    top: 66px;
+  }
+  .section,
+  #congcu,
+  .budget {
+    padding-top: 76px;
+  }
+  .configs-band,
+  .closing {
+    margin-top: 84px;
+    padding-block: 60px;
+  }
+  .reasons,
+  .roadmap,
+  .live-workbench {
+    margin-top: 64px;
+  }
+  .hero h1 {
+    font-size: clamp(34px, 9.4vw, 44px);
+  }
+  .hero-letter .button,
+  .decision-actions .button {
+    width: 100%;
+  }
+  .hero-ai-trio {
+    gap: 6px 8px;
+    font-size: 14px;
+  }
+  .study-tab {
+    font-size: 21px;
+    min-height: 44px;
+  }
+  .study-tools {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    text-align: left;
+  }
+  .study-workspace svg {
+    display: none;
+  }
+  .study-workspace figcaption {
+    text-align: left;
+    border-top: 1px solid var(--line);
+    padding-top: 10px;
+  }
+  .letter-meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .signature {
+    font-size: 34px;
+  }
+  #stage-feature {
+    font-size: clamp(28px, 8vw, 36px);
+  }
+  #stage-feature-label {
+    width: 100%;
+    font-size: 13px;
+  }
+  .wb-bar {
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+  .wb-body {
+    padding: 18px 16px;
+    min-height: 220px;
+  }
+  .demo-ledger-row,
+  .demo-ledger-total {
+    gap: 12px;
+    font-size: 13.5px;
+  }
+  .demo-ledger-row strong,
+  .demo-ledger-total span:last-child {
+    white-space: nowrap;
+  }
+  .choice {
+    min-height: 0;
+    padding: 22px 18px;
+  }
+  .choice .choice-price {
+    padding-top: 18px;
+  }
+  .income-ratio-strip {
+    padding: 20px 18px;
+  }
+  .ratio-cards {
+    grid-template-columns: 1fr;
+    gap: 14px;
+    padding-bottom: 18px;
+  }
+  .ratio-metric strong {
+    font-size: 22px;
+  }
+  .worksheet {
+    padding: 22px 18px;
+  }
+  .terms {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 6px;
+  }
+  .term {
+    padding: 10px 6px;
+    font-size: 13px;
+    text-align: center;
+  }
+  th,
+  td {
+    padding: 11px 10px;
+    font-size: 13px;
+  }
+  .commitment-markers {
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 28px;
+  }
+  .commitment-markers strong {
+    font-size: 26px;
+  }
+  .questions details {
+    padding: 0 16px;
+  }
+  .questions summary {
+    font-size: 14.5px;
+    gap: 12px;
+    padding-block: 12px;
   }
 }
 
