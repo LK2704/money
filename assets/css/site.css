@@ -1757,9 +1757,10 @@ td.selected-col {
 
 .decision-result {
   margin-top: 24px;
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 500;
   line-height: 1.75;
-  color: var(--text);
+  color: var(--signal);
 }
 
 .decision-result:not(:empty) {

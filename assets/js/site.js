@@ -718,18 +718,14 @@
   byId("agree-standard").addEventListener("click", () => {
     discussionBox.hidden = true;
     discussBtn.setAttribute("aria-expanded", "false");
-    setDecisionMessage(
-      "Con cảm ơn Mẹ đã tin tưởng duyệt khoản đầu tư 10.000 ₫/ngày cho tương lai nghề Web của con. Ngay tuần này, con sẽ giữ kỷ luật tắt máy đúng 23:00, học chắc trên lớp và hoàn thiện sản phẩm Web đầu tiên để Chủ Nhật mở báo cáo Mẹ."
-    );
+    setDecisionMessage("Con cảm ơn mẹ mập iu dấu");
     window.OpticalFilament?.pulseDecision();
   });
 
   byId("agree-trial").addEventListener("click", () => {
     discussionBox.hidden = true;
     discussBtn.setAttribute("aria-expanded", "false");
-    setDecisionMessage(
-      "Con cảm ơn Mẹ đã duyệt gói thử nghiệm 7 ngày đầu tiên (70.000 ₫). Con xin nhận cam kết hoàn thành một trang Web hoàn chỉnh vào Chủ Nhật tới để Mẹ trực tiếp kiểm chứng hiệu quả đầu tư."
-    );
+    setDecisionMessage("Con cảm ơn mẹ mập iu dấu");
     window.OpticalFilament?.pulseDecision();
   });
 
