@@ -14,13 +14,13 @@
       type="image/svg+xml"
       href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23060809'/%3E%3Cpolygon points='16 5 26 24 6 24' fill='none' stroke='%235ce6b8' stroke-width='1.8'/%3E%3Ccircle cx='16' cy='17' r='2.6' fill='%23e4c482'/%3E%3C/svg%3E"
     />
-    <link rel="stylesheet" href="assets/css/site.css?v=7" />
-    <script src="assets/js/intro.js?v=7"></script>
+    <link rel="stylesheet" href="assets/css/site.css?v=9" />
+    <script src="assets/js/intro.js?v=9"></script>
     <script src="assets/vendor/gsap.min.js" defer></script>
     <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
-    <script src="assets/js/ai-core-3d.js?v=7" defer></script>
-    <script src="assets/js/optical-filament.js?v=7" defer></script>
-    <script src="assets/js/site.js?v=8" defer></script>
+    <script src="assets/js/ai-core-3d.js?v=9" defer></script>
+    <script src="assets/js/optical-filament.js?v=9" defer></script>
+    <script src="assets/js/site.js?v=9" defer></script>
   </head>
   <body>
     <!-- Cinematic Skippable Optical Aperture Intro (~3.4s) -->
@@ -376,27 +376,27 @@
                 Là công cụ lập trình chuyên sâu của OpenAI, Codex đọc hiểu trực tiếp cấu trúc tệp của dự án, tự động phát hiện sai sót logic, viết các khối chức năng tính toán và giải thích từng bước xử lý giúp con nắm chắc kỹ thuật ngay trong lúc thực hành.
               </p>
 
-              <div class="hardware-tabs" role="group" aria-label="Ba công cụ AI lập trình trong gói đầu tư">
+              <div class="hardware-tabs" role="group" aria-label="Ba công cụ AI lập trình trong hệ sinh thái thực hành">
                 <button class="hardware-tab" type="button" data-part="0" style="--tab-accent: #5ce6b8" aria-pressed="true">
                   <span class="tab-brand">
                     <svg class="tab-logo" aria-hidden="true"><use href="#logo-codex" /></svg>
                     <span>Codex<span class="tab-org"> · OpenAI</span></span>
                   </span>
-                  <span aria-hidden="true">Viết mã &amp; Sửa lỗi tự động</span>
+                  <span class="tab-tier"><span class="tab-org">Sẵn có · </span>0 ₫</span>
                 </button>
-                <button class="hardware-tab" type="button" data-part="1" style="--tab-accent: #f09a7e" aria-pressed="false">
+                <button class="hardware-tab is-paid" type="button" data-part="1" style="--tab-accent: #f09a7e" aria-pressed="false">
                   <span class="tab-brand">
                     <svg class="tab-logo" aria-hidden="true"><use href="#logo-claudecode" /></svg>
                     <span>Claude Code<span class="tab-org"> · Anthropic</span></span>
                   </span>
-                  <span aria-hidden="true">Thiết kế &amp; Mã nguồn chuẩn</span>
+                  <span class="tab-tier tab-tier-paid"><span class="tab-org">Gói đầu tư · </span>10K/ngày</span>
                 </button>
                 <button class="hardware-tab" type="button" data-part="2" style="--tab-accent: #84c5ff" aria-pressed="false">
                   <span class="tab-brand">
                     <svg class="tab-logo" aria-hidden="true"><use href="#logo-antigravity" /></svg>
                     <span><span class="tab-org">Google </span>Antigravity</span>
                   </span>
-                  <span aria-hidden="true">Dựng &amp; Chạy trọn dự án</span>
+                  <span class="tab-tier"><span class="tab-org">Sẵn có · </span>0 ₫</span>
                 </button>
               </div>
 
@@ -538,7 +538,8 @@
         <form class="worksheet reveal" aria-label="Bảng ước tính ngân sách đầu tư theo thời gian" onsubmit="return false;">
           <div class="budget-total">
             <p class="budget-selected" id="budget-selected">
-              Định mức cố định · 2% thu nhập ngày (10.000 ₫ / 500.000 ₫)
+              <svg class="budget-claude-icon" aria-hidden="true"><use href="#logo-claudecode" /></svg>
+              <span>1 gói trả phí duy nhất: <strong>Claude</strong> · 2% thu nhập ngày</span>
             </p>
             <div class="total-price" id="total-price">300.000 ₫</div>
             <p id="budget-equivalent">

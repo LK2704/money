@@ -1029,7 +1029,26 @@ main,
 
 .hardware-tab > span + span {
   font-size: 12.5px;
-  opacity: 0.8;
+  opacity: 0.72;
+}
+
+.tab-tier-paid {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #f09a7e;
+  opacity: 1 !important;
+  font-weight: 500;
+}
+
+.tab-tier-paid::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f09a7e;
+  box-shadow: 0 0 8px rgba(240, 154, 126, 0.7);
+  flex-shrink: 0;
 }
 
 .hardware-tab[aria-pressed="true"] {
@@ -1411,9 +1430,24 @@ main,
 }
 
 .budget-selected {
-  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
   color: var(--signal);
   margin-bottom: 14px;
+}
+
+.budget-selected strong {
+  color: #f09a7e;
+  font-weight: 600;
+}
+
+.budget-claude-icon {
+  width: 15px;
+  height: 15px;
+  color: #f09a7e;
+  flex-shrink: 0;
 }
 
 .total-price {
@@ -2052,7 +2086,14 @@ td.selected-col {
     line-height: 1.25;
   }
   .hardware-tab > span + span {
-    display: none;
+    display: inline-flex;
+    font-size: 10.5px;
+    line-height: 1.2;
+    margin-top: 2px;
+  }
+  .tab-tier-paid::before {
+    width: 5px;
+    height: 5px;
   }
   #part-description {
     min-height: 0;

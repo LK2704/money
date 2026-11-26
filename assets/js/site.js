@@ -149,10 +149,10 @@
     {
       feature: "Claude Code",
       logoId: "#logo-claudecode",
-      label: "Anthropic · Kỹ sư kiến trúc hệ thống & thẩm mỹ Web",
+      label: "Anthropic · Gói trả phí cốt lõi (10.000 ₫ / ngày)",
       title: "Chuyên gia thiết kế giao diện tinh tế và mã nguồn chuẩn mực.",
       desc: "Trong giới phát triển Website chuyên nghiệp, Claude Code nổi tiếng nhất về khả năng tổ chức mã nguồn sạch sẽ, xây dựng bố cục giao diện sang trọng, hiển thị mượt trên cả điện thoại lẫn máy tính và rèn cho con tư duy kỹ thuật bài bản ngay từ đầu.",
-      insight: "Đảm bảo mỗi trang Web con làm ra đều đạt độ hoàn thiện thẩm mỹ đủ chuẩn bàn giao cho khách hàng.",
+      insight: "Đây là công cụ duy nhất con đề xuất mua gói trả phí (10K/ngày); hai công cụ còn lại tận dụng bản sẵn có.",
       accent: [0.90, 0.50, 0.36], // Warm Copper-Terracotta
       colorCss: "#f09a7e"
     },
