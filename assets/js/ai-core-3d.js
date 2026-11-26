@@ -850,7 +850,7 @@
 
       function resize() {
         const rect = canvas.getBoundingClientRect();
-        const maxDpr = window.innerWidth <= 768 ? 1.0 : 1.35;
+        const maxDpr = window.innerWidth <= 768 ? 1.85 : 1.5;
         const dpr = Math.min(window.devicePixelRatio || 1, maxDpr);
         const w = Math.max(2, Math.round(rect.width * dpr));
         const h = Math.max(2, Math.round(rect.height * dpr));

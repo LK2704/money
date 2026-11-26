@@ -1898,7 +1898,7 @@ td.selected-col {
 
 @media (max-width: 960px) {
   .optical-ribbon {
-    display: none;
+    display: none !important;
   }
   .nav {
     min-height: 72px;
@@ -2110,11 +2110,11 @@ td.selected-col {
 /* Dedicated Small-Phone Ergonomics (360px - 600px portrait screens) */
 @media (max-width: 600px) {
   :root {
-    --gutter: 20px;
+    --gutter: 24px;
   }
   body {
     font-size: 15px;
-    line-height: 1.7;
+    line-height: 1.72;
   }
   .intro-mark {
     width: 100%;
@@ -2191,8 +2191,11 @@ td.selected-col {
     width: 100%;
   }
   .hero-ai-trio {
-    gap: 6px 8px;
+    gap: 8px 16px;
     font-size: 13.5px;
+  }
+  .trio-sep {
+    display: none;
   }
   .study-tab {
     font-size: 20px;
