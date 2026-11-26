@@ -126,7 +126,7 @@
 
   function render(now) {
     rafId = 0;
-    if (!xs.length) return;
+    if (!xs.length || document.documentElement.classList.contains("has-intro")) return;
 
     const scroll = window.scrollY;
     ctx.clearRect(0, 0, width, height);
@@ -272,5 +272,12 @@
     }
   };
 
-  computePath();
+  window.addEventListener("intro:done", () => {
+    computePath();
+    requestTick();
+  }, { once: true });
+
+  if (!document.documentElement.classList.contains("has-intro")) {
+    requestAnimationFrame(computePath);
+  }
 })();

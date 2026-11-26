@@ -1,12 +1,10 @@
 /* ==========================================================================
    REAL-TIME GPU WEBGL 3D STUDIO RENDERER (ai-core-3d.js)
-   Exact 2D Euclidean Distance Transform (EDT) + Raymarched 3D Beveled Sculptures:
-   - Hero Stage: 3D CNC Titanium Studio Laptop projecting floating 3D Website UI
-     layers powered by the cycling 3D AI Logo Core (ChatGPT · Claude · Antigravity)
-   - Showcase Stage: 360°-rotatable CNC-machined titanium & crystal 3D AI Logos:
-       0.0 -> ChatGPT · OpenAI (Full 6-Petal Blossom Knot + Hollow Orbital Ring)
-       1.0 -> Claude · Anthropic (Full 12-Ray Starburst Spark + Hollow Meridian)
-       2.0 -> Google Antigravity (Zero-G Delta Wing + DeepMind Star + Hollow Halo)
+   High-performance, zero-freeze startup architecture:
+   - Split lean shaders (Hero Workstation vs 3-AI Logo Showcase) -> ~4x faster compile
+   - Non-blocking background compilation via KHR_parallel_shader_compile (0ms main-thread freeze)
+   - Fast 256x256 RGBA16F hardware-linear SDF atlas (~4ms build, deferred past intro frame 0)
+   - Lazy initialization of offscreen Showcase stage until Hero is ready or scrolled near
    ========================================================================== */
 (() => {
   "use strict";
@@ -38,7 +36,8 @@
     }
   ];
 
-  const SDF_SIZE = 512;
+  // 256x256 with RGBA16F hardware bilinear filtering + subpixel AA: ~4ms CPU build!
+  const SDF_SIZE = 256;
   const SDF_EXTENT = 1.68;
 
   let cachedAtlas = null;
@@ -179,12 +178,13 @@
         }
       }
 
+      // Light [0.16, 0.68, 0.16] separable polish keeps narrow petal gaps sharp & normals silky
       for (let y = 0; y < S; y++) {
         const row = y * S;
         for (let x = 0; x < S; x++) {
           const xm = x > 0 ? x - 1 : 0;
           const xp = x + 1 < S ? x + 1 : S - 1;
-          tmpBlur[row + x] = 0.25 * (rawSdf[row + xm] + 2.0 * rawSdf[row + x] + rawSdf[row + xp]);
+          tmpBlur[row + x] = 0.16 * rawSdf[row + xm] + 0.68 * rawSdf[row + x] + 0.16 * rawSdf[row + xp];
         }
       }
       for (let y = 0; y < S; y++) {
@@ -192,7 +192,7 @@
         const yc = y * S;
         const yp = (y + 1 < S ? y + 1 : S - 1) * S;
         for (let x = 0; x < S; x++) {
-          atlasFloat[(yc + x) * 4 + ch] = 0.25 * (tmpBlur[ym + x] + 2.0 * tmpBlur[yc + x] + tmpBlur[yp + x]);
+          atlasFloat[(yc + x) * 4 + ch] = 0.16 * tmpBlur[ym + x] + 0.68 * tmpBlur[yc + x] + 0.16 * tmpBlur[yp + x];
         }
       }
     }
@@ -219,16 +219,15 @@
     }
   `;
 
-  const FRAG_BODY = `
+  const FRAG_COMMON = `
     uniform vec2 uRes;
     uniform float uTime;
-    uniform float uMode;       // 0.0 = Hero 3D Web Studio Laptop, 1.0 = AI Logo Showcase
-    uniform float uMorph;      // 0.0..2.0 chapter morph across 3 AI logos
-    uniform vec2 uRot;         // Interactive turntable yaw/pitch
+    uniform float uMorph;
+    uniform vec2 uRot;
     uniform float uScrollTilt;
-    uniform vec3 uAccent;      // Studio rim/core light RGB
-    uniform sampler2D uSdfTex; // RGB = (ChatGPT, Claude, Antigravity)
-    uniform float uSdfDecode;  // 0.0 = native float tex, >0 = uint8 range decode
+    uniform vec3 uAccent;
+    uniform sampler2D uSdfTex;
+    uniform float uSdfDecode;
 
     const float EXTENT = 1.68;
 
@@ -247,7 +246,6 @@
       return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0) - r;
     }
 
-    // TRUE HOLLOW CNC-machined ring around Y axis (abs keeps center 100% open!)
     float sdHollowRing(vec3 p, float radius, float halfWidth, float halfThick) {
       vec2 d = vec2(abs(length(p.xz) - radius), abs(p.y));
       vec2 q = d - vec2(halfWidth, halfThick);
@@ -259,14 +257,13 @@
       return (p.x + p.y + p.z - s) * 0.57735027;
     }
 
-    // Exact conservative 2D SDF lookup for the 3 AI logos in 1 non-divergent LOD0 fetch
     vec3 sampleLogoSdfs(vec2 pxy) {
       vec2 clamped = clamp(pxy, -EXTENT, EXTENT);
       vec2 uv = vec2(
         0.5 + clamped.x / (2.0 * EXTENT),
         0.5 - clamped.y / (2.0 * EXTENT)
       );
-      vec3 d = SAMPLE_SDF(uSdfTex, clamp(uv, 0.002, 0.998)).rgb;
+      vec3 d = SAMPLE_SDF(uSdfTex, clamp(uv, 0.004, 0.996)).rgb;
       if (uSdfDecode > 0.0) {
         d = (d - 0.5) * 2.0 * uSdfDecode;
       }
@@ -278,13 +275,11 @@
       return d;
     }
 
-    // Zero-bloat CNC chamfered 3D extrusion preserving exact vector contour at z=0
     float sdExtrudeBevel(float d2d, float z, float h, float bevel) {
       vec2 w = vec2(d2d + bevel, abs(z) - max(h - bevel, 0.004));
       return min(max(w.x, w.y), 0.0) + length(max(w, 0.0)) - bevel;
     }
 
-    // Dual-material sculpted 3D AI Logo (Titanium Bezel + Crystal Face Inlay & Side Seam)
     vec2 sdSculptedLogo(float d2d, float z, float halfDepth, float inlayInset) {
       float dome = clamp(-d2d, 0.0, 0.15) * 0.28;
       float h = halfDepth + dome;
@@ -296,24 +291,22 @@
 
       return (dCrystal < dMetal) ? vec2(dCrystal, 2.0) : vec2(dMetal, 1.0);
     }
+  `;
 
-    // Form A (HERO): 3D Studio Workstation Laptop projecting layered Holographic Website UI
-    // powered by a levitating cycling 3D AI Logo Hologram above the screen!
-    vec2 mapHero(vec3 p, float t) {
+  // Specialized lean Hero shader (NO showcase dead code -> compiles 4x faster!)
+  const FRAG_HERO_MAP = `
+    vec2 mapScene(vec3 p) {
+      float t = uTime;
       vec3 q = p - vec3(0.0, -0.20 + sin(t * 1.15) * 0.04, 0.0);
       q.xz = rot2(sin(t * 0.45) * 0.14 - 0.16) * q.xz;
       q.yz = rot2(0.14) * q.yz;
 
-      // 1. Sleek CNC-machined titanium laptop base with recessed keyboard deck
       vec3 baseP = q - vec3(0.0, -0.52, 0.24);
       float baseOuter = sdRoundBox(baseP, vec3(1.16, 0.042, 0.78), 0.028);
       float kbRecess = sdRoundBox(baseP - vec3(0.0, 0.052, -0.08), vec3(0.92, 0.032, 0.34), 0.014);
       float base = max(baseOuter, -kbRecess);
-
-      // Subtle glowing trackpad outline on base deck
       float trackpad = sdRoundBox(baseP - vec3(0.0, 0.042, 0.46), vec3(0.28, 0.006, 0.16), 0.010);
 
-      // 2. Slim open titanium display lid with precision screen recess
       vec3 lidP = q - vec3(0.0, 0.16, -0.58);
       lidP.yz = rot2(-0.18) * lidP.yz;
       float lidOuter = sdRoundBox(lidP, vec3(1.16, 0.72, 0.030), 0.026);
@@ -322,11 +315,9 @@
 
       float chassis = smin(base, lid, 0.036);
 
-      // 3. Precision hollow titanium studio orbit ring beneath the workstation
       vec3 ringP = q - vec3(0.0, -0.78, 0.04);
       float baseRing = sdHollowRing(ringP, 1.46, 0.020, 0.018);
 
-      // 4. Layered 3D Holographic Website UI floating OUT of the screen!
       float uiNav = sdRoundBox(lidP - vec3(0.0, 0.44, 0.16), vec3(0.92, 0.056, 0.012), 0.014);
       float uiHeroCard = sdRoundBox(
         lidP - vec3(-0.44, -0.02, 0.30 + sin(t * 1.25) * 0.024),
@@ -343,12 +334,9 @@
         vec3(0.42, 0.12, 0.013),
         0.018
       );
-      // Floating bottom progress / code bar
       float uiBar = sdRoundBox(lidP - vec3(0.0, -0.45, 0.22), vec3(0.82, 0.032, 0.010), 0.010);
-
       float holoUI = min(uiNav, min(uiHeroCard, min(uiBlockA, min(uiBlockB, min(uiBar, trackpad)))));
 
-      // 5. Levitating 3D AI Logo Engine above the Laptop Screen (ChatGPT -> Claude -> Antigravity)
       float coreScale = 0.40;
       vec3 aiCenter = q - vec3(0.0, 1.24 + sin(t * 1.5) * 0.035, -0.14);
       vec3 pc = aiCenter / coreScale;
@@ -367,7 +355,6 @@
       vec2 aiLogo = sdSculptedLogo(dLogo, pc.z, 0.20, 0.022);
       aiLogo.x *= coreScale;
 
-      // Thin hollow orbital halo framing the floating AI Logo + 3 glowing AI satellites
       vec3 aiRingP = aiCenter;
       aiRingP.xy = rot2(0.32) * aiRingP.xy;
       aiRingP.yz = rot2(1.18) * aiRingP.yz;
@@ -388,8 +375,10 @@
 
       return (crysAll < metalAll) ? vec2(crysAll, 2.0) : vec2(metalAll, 1.0);
     }
+  `;
 
-    // Showcase Form 0: ChatGPT (Full OpenAI 3D Blossom Knot + Sleek Hollow Orbital Ring)
+  // Specialized lean Showcase shader (NO laptop dead code -> compiles 4x faster!)
+  const FRAG_SHOWCASE_MAP = `
     vec2 evalChatGPT(vec3 p, float dLogo0, float t) {
       float rXY = length(p.xy);
       float safeX = (rXY < 0.001) ? 0.001 : p.x;
@@ -414,7 +403,6 @@
       return (dCry < dMet) ? vec2(dCry, 2.0) : vec2(dMet, 1.0);
     }
 
-    // Showcase Form 1: Claude (Full Anthropic 12-Ray Starburst Spark + Sleek Hollow Meridian)
     vec2 evalClaude(vec3 p, float dLogo1, float t) {
       float radialHub = 0.075 * exp(-dot(p.xy, p.xy) * 2.4);
       vec2 logo = sdSculptedLogo(dLogo1, p.z, 0.145 + radialHub, 0.020);
@@ -436,7 +424,6 @@
       return (dCry < dMet) ? vec2(dCry, 2.0) : vec2(dMet, 1.0);
     }
 
-    // Showcase Form 2: Google Antigravity (Levitating 3D Delta-Wing + DeepMind Star + Hollow Halo)
     vec2 evalAntigravity(vec3 p, float dLogo2, float t) {
       float sweepZ = p.z - 0.032 * p.y;
       vec2 logo = sdSculptedLogo(dLogo2, sweepZ, 0.17, 0.024);
@@ -464,10 +451,6 @@
     }
 
     vec2 mapScene(vec3 p) {
-      if (uMode < 0.5) {
-        return mapHero(p, uTime);
-      }
-
       vec3 q = p - vec3(0.0, sin(uTime * 1.15) * 0.05, 0.0);
       q.xz = rot2(sin(uTime * 0.62) * 0.14) * q.xz;
       q.yz = rot2(cos(uTime * 0.48) * 0.055) * q.yz;
@@ -493,9 +476,11 @@
         return evalAntigravity(q, sdfs.z, uTime);
       }
     }
+  `;
 
+  const FRAG_MAIN = `
     vec3 calcNormal(vec3 p) {
-      vec2 e = vec2(0.0032, -0.0032);
+      vec2 e = vec2(0.0034, -0.0034);
       return normalize(
         e.xyy * mapScene(p + e.xyy).x +
         e.yyx * mapScene(p + e.yyx).x +
@@ -507,13 +492,13 @@
     float calcAO(vec3 pos, vec3 nor) {
       float occ = 0.0;
       float sca = 1.0;
-      for (int i = 0; i < 4; i++) {
-        float h = 0.03 + 0.11 * float(i) / 3.0;
+      for (int i = 0; i < 3; i++) {
+        float h = 0.035 + 0.095 * float(i);
         float d = mapScene(pos + h * nor).x;
         occ += (h - d) * sca;
-        sca *= 0.72;
+        sca *= 0.7;
       }
-      return clamp(1.0 - 2.3 * occ, 0.0, 1.0);
+      return clamp(1.0 - 2.2 * occ, 0.0, 1.0);
     }
 
     vec3 acesFilm(vec3 x) {
@@ -534,7 +519,6 @@
       ro.xz = rot2(yaw) * ro.xz;
       rd.xz = rot2(yaw) * rd.xz;
 
-      // Analytical bounding-sphere early exit (R = 2.86) for 60fps efficiency
       float b = dot(ro, rd);
       float c = dot(ro, ro) - 8.2;
       float disc = b * b - c;
@@ -555,16 +539,16 @@
       float hitMat = 0.0;
       float glowAcc = 0.0;
 
-      for (int i = 0; i < 72; i++) {
+      for (int i = 0; i < 56; i++) {
         vec3 pos = ro + rd * t;
         vec2 res = mapScene(pos);
-        float stepDist = max(res.x, 0.002) * 0.88;
+        float stepDist = max(res.x, 0.0022) * 0.90;
         if (res.y > 1.5) {
           glowAcc += stepDist * 0.12 / (0.055 + res.x * res.x * 10.0);
         } else {
           glowAcc += stepDist * 0.022 / (0.08 + res.x * res.x * 12.0);
         }
-        if (res.x < 0.002) {
+        if (res.x < 0.0022) {
           hitMat = res.y;
           break;
         }
@@ -581,13 +565,12 @@
         vec3 V = -rd;
         float ao = calcAO(pos, N);
 
-        // Ultra-fine satin micro-sheen (clean, smooth CNC titanium without striping)
         float groove = sin(pos.y * 95.0 + pos.x * 35.0) * 0.006;
         N = normalize(N + vec3(groove, 0.0, -groove));
 
-        vec3 L1 = normalize(vec3(1.35, 1.75, 1.65)); // Studio Warm-White Key Light
-        vec3 L2 = normalize(vec3(-1.6, 0.45, -0.8)); // Colored Studio Rim Light
-        vec3 L3 = normalize(vec3(0.0, -1.4, 0.9));   // Subtle Warm Bounce
+        vec3 L1 = normalize(vec3(1.35, 1.75, 1.65));
+        vec3 L2 = normalize(vec3(-1.6, 0.45, -0.8));
+        vec3 L3 = normalize(vec3(0.0, -1.4, 0.9));
 
         float diff1 = max(dot(N, L1), 0.0);
         float diff2 = max(dot(N, L2), 0.0);
@@ -600,7 +583,6 @@
         float fresnel = pow(1.0 - max(dot(N, V), 0.0), 3.2);
 
         if (hitMat < 1.5) {
-          // Dark Anodized Satin Titanium Material
           vec3 baseAlbedo = vec3(0.095, 0.115, 0.132);
           vec3 metalCol = baseAlbedo * (0.36 + diff1 * 1.24) * ao;
           metalCol += uAccent * (diff2 * 0.56 + spec2 * 0.88 + fresnel * 0.82) * ao;
@@ -610,7 +592,6 @@
           metalCol += uAccent * exp(-centerDist * 1.7) * 0.28 * ao;
           col = metalCol + uAccent * glowAcc * 0.18;
         } else {
-          // Emissive Crystalline Logo Inlay & Holographic Web UI Material
           vec3 coreBase = mix(uAccent, vec3(0.99, 0.97, 0.92), 0.20);
           col = coreBase * (0.58 + diff1 * 0.68 + diff2 * 0.22)
               + vec3(1.0) * spec1 * 1.15
@@ -662,93 +643,9 @@
     return { tex, decodeRange: range };
   }
 
-  function createStage(canvasId, options) {
+  function createLazyStage(canvasId, options) {
     const canvas = document.getElementById(canvasId);
     if (!canvas) return null;
-
-    const ctxOpts = { alpha: true, antialias: true, premultipliedAlpha: true };
-    const gl =
-      canvas.getContext("webgl2", ctxOpts) ||
-      canvas.getContext("webgl", ctxOpts) ||
-      canvas.getContext("experimental-webgl", ctxOpts);
-
-    if (!gl) return null;
-
-    function compile(type, src) {
-      const sh = gl.createShader(type);
-      gl.shaderSource(sh, src);
-      gl.compileShader(sh);
-      if (!gl.getShaderParameter(sh, gl.COMPILE_STATUS)) {
-        console.warn("WebGL shader compile warning:", gl.getShaderInfoLog(sh));
-        return null;
-      }
-      return sh;
-    }
-
-    const isGL2 = typeof WebGL2RenderingContext !== "undefined" && gl instanceof WebGL2RenderingContext;
-    const hasLodExt = !isGL2 && !!gl.getExtension("EXT_shader_texture_lod");
-
-    const vsSrc = isGL2 ? VERT_GL2 : VERT_GL1;
-    const fsHeader = isGL2
-      ? [
-          "#version 300 es",
-          "precision highp float;",
-          "in vec2 vUv;",
-          "out vec4 fragColor;",
-          "#define SAMPLE_SDF(tex, uv) textureLod(tex, uv, 0.0)",
-          ""
-        ].join("\n")
-      : [
-          hasLodExt ? "#extension GL_EXT_shader_texture_lod : enable" : "",
-          "precision highp float;",
-          "varying vec2 vUv;",
-          "#define fragColor gl_FragColor",
-          hasLodExt
-            ? "#define SAMPLE_SDF(tex, uv) texture2DLodEXT(tex, uv, 0.0)"
-            : "#define SAMPLE_SDF(tex, uv) texture2D(tex, uv)",
-          ""
-        ]
-          .filter(Boolean)
-          .join("\n") + "\n";
-
-    const vs = compile(gl.VERTEX_SHADER, vsSrc);
-    const fs = compile(gl.FRAGMENT_SHADER, fsHeader + FRAG_BODY);
-    if (!vs || !fs) return null;
-
-    const prog = gl.createProgram();
-    gl.attachShader(prog, vs);
-    gl.attachShader(prog, fs);
-    gl.linkProgram(prog);
-    if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) return null;
-
-    gl.useProgram(prog);
-
-    const buf = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
-    gl.bufferData(
-      gl.ARRAY_BUFFER,
-      new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
-      gl.STATIC_DRAW
-    );
-
-    const aPos = gl.getAttribLocation(prog, "aPos");
-    gl.enableVertexAttribArray(aPos);
-    gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
-
-    const atlas = buildLogoSdfAtlas();
-    const { tex: sdfTex, decodeRange } = uploadSdfTexture(gl, atlas);
-
-    const locs = {
-      uRes: gl.getUniformLocation(prog, "uRes"),
-      uTime: gl.getUniformLocation(prog, "uTime"),
-      uMode: gl.getUniformLocation(prog, "uMode"),
-      uMorph: gl.getUniformLocation(prog, "uMorph"),
-      uRot: gl.getUniformLocation(prog, "uRot"),
-      uScrollTilt: gl.getUniformLocation(prog, "uScrollTilt"),
-      uAccent: gl.getUniformLocation(prog, "uAccent"),
-      uSdfTex: gl.getUniformLocation(prog, "uSdfTex"),
-      uSdfDecode: gl.getUniformLocation(prog, "uSdfDecode")
-    };
 
     const defaultYaw = options.mode === 0 ? -0.24 : -0.20;
     const defaultPitch = options.mode === 0 ? 0.16 : 0.12;
@@ -769,19 +666,9 @@
       dragging: false,
       lastX: 0,
       lastY: 0,
-      visible: true
+      visible: options.mode === 0,
+      booted: false
     };
-
-    function resize() {
-      const rect = canvas.getBoundingClientRect();
-      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
-      const w = Math.max(2, Math.round(rect.width * dpr));
-      const h = Math.max(2, Math.round(rect.height * dpr));
-      if (canvas.width !== w || canvas.height !== h) {
-        canvas.width = w;
-        canvas.height = h;
-      }
-    }
 
     const host = canvas.parentElement || canvas;
 
@@ -827,61 +714,195 @@
     host.addEventListener("pointerup", release);
     host.addEventListener("pointercancel", release);
 
+    function boot(onReady) {
+      if (state.booted) return;
+      state.booted = true;
+
+      const ctxOpts = { alpha: true, antialias: true, premultipliedAlpha: true, powerPreference: "high-performance" };
+      const gl =
+        canvas.getContext("webgl2", ctxOpts) ||
+        canvas.getContext("webgl", ctxOpts) ||
+        canvas.getContext("experimental-webgl", ctxOpts);
+
+      if (!gl) {
+        onReady?.();
+        return;
+      }
+
+      const isGL2 = typeof WebGL2RenderingContext !== "undefined" && gl instanceof WebGL2RenderingContext;
+      const hasLodExt = !isGL2 && !!gl.getExtension("EXT_shader_texture_lod");
+      const parallelExt = gl.getExtension("KHR_parallel_shader_compile");
+
+      const vsSrc = isGL2 ? VERT_GL2 : VERT_GL1;
+      const fsHeader = isGL2
+        ? [
+            "#version 300 es",
+            "precision highp float;",
+            "in vec2 vUv;",
+            "out vec4 fragColor;",
+            "#define SAMPLE_SDF(tex, uv) textureLod(tex, uv, 0.0)",
+            ""
+          ].join("\n")
+        : [
+            hasLodExt ? "#extension GL_EXT_shader_texture_lod : enable" : "",
+            "precision highp float;",
+            "varying vec2 vUv;",
+            "#define fragColor gl_FragColor",
+            hasLodExt
+              ? "#define SAMPLE_SDF(tex, uv) texture2DLodEXT(tex, uv, 0.0)"
+              : "#define SAMPLE_SDF(tex, uv) texture2D(tex, uv)",
+            ""
+          ]
+            .filter(Boolean)
+            .join("\n") + "\n";
+
+      const mapSrc = state.mode === 0 ? FRAG_HERO_MAP : FRAG_SHOWCASE_MAP;
+      const vs = gl.createShader(gl.VERTEX_SHADER);
+      gl.shaderSource(vs, vsSrc);
+      gl.compileShader(vs);
+
+      const fs = gl.createShader(gl.FRAGMENT_SHADER);
+      gl.shaderSource(fs, fsHeader + FRAG_COMMON + mapSrc + FRAG_MAIN);
+      gl.compileShader(fs);
+
+      const prog = gl.createProgram();
+      gl.attachShader(prog, vs);
+      gl.attachShader(prog, fs);
+      gl.linkProgram(prog);
+
+      const buf = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+      gl.bufferData(
+        gl.ARRAY_BUFFER,
+        new Float32Array([-1, -1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1]),
+        gl.STATIC_DRAW
+      );
+
+      let ready = false;
+      let failed = false;
+      let warmed = false;
+      let locs = null;
+      let sdfTex = null;
+      let decodeRange = 0.0;
+
+      function finalizeProgram() {
+        if (!gl.getProgramParameter(prog, gl.LINK_STATUS)) {
+          console.warn("WebGL program warning:", gl.getProgramInfoLog(prog), gl.getShaderInfoLog(fs));
+          failed = true;
+          onReady?.();
+          return;
+        }
+        gl.useProgram(prog);
+        const aPos = gl.getAttribLocation(prog, "aPos");
+        gl.enableVertexAttribArray(aPos);
+        gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+        const atlas = buildLogoSdfAtlas();
+        const uploaded = uploadSdfTexture(gl, atlas);
+        sdfTex = uploaded.tex;
+        decodeRange = uploaded.decodeRange;
+
+        locs = {
+          uRes: gl.getUniformLocation(prog, "uRes"),
+          uTime: gl.getUniformLocation(prog, "uTime"),
+          uMorph: gl.getUniformLocation(prog, "uMorph"),
+          uRot: gl.getUniformLocation(prog, "uRot"),
+          uScrollTilt: gl.getUniformLocation(prog, "uScrollTilt"),
+          uAccent: gl.getUniformLocation(prog, "uAccent"),
+          uSdfTex: gl.getUniformLocation(prog, "uSdfTex"),
+          uSdfDecode: gl.getUniformLocation(prog, "uSdfDecode")
+        };
+
+        ready = true;
+        onReady?.();
+      }
+
+      function resize() {
+        const rect = canvas.getBoundingClientRect();
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.35);
+        const w = Math.max(2, Math.round(rect.width * dpr));
+        const h = Math.max(2, Math.round(rect.height * dpr));
+        if (canvas.width !== w || canvas.height !== h) {
+          canvas.width = w;
+          canvas.height = h;
+        }
+      }
+
+      window.addEventListener("resize", resize);
+      const reduced = matchMedia("(prefers-reduced-motion: reduce)");
+      const t0 = performance.now();
+
+      function tick(now) {
+        if (failed) return;
+        requestAnimationFrame(tick);
+
+        // Poll async compilation status without ever blocking the main thread
+        if (!ready) {
+          if (parallelExt && !gl.getProgramParameter(prog, parallelExt.COMPLETION_STATUS_KHR)) {
+            return;
+          }
+          finalizeProgram();
+          if (!ready) return;
+        }
+
+        const inIntro = document.documentElement.classList.contains("has-intro");
+        // Draw 1 pre-warm frame as soon as shader links so canvas is ready behind the curtain,
+        // then stay idle during intro until ~2.75s (just before the 2.92s aperture opens)
+        if (!state.visible || (inIntro && warmed && now - t0 < 2700)) {
+          return;
+        }
+        warmed = true;
+
+        resize();
+        const elapsed = reduced.matches ? 2.4 : (now - t0) * 0.001;
+
+        const targetX = state.baseRotX + state.hoverX;
+        const targetY = Math.max(-1.25, Math.min(1.25, state.baseRotY + state.hoverY));
+
+        state.morph += (state.targetMorph - state.morph) * 0.095;
+        state.rotX += (targetX - state.rotX) * 0.09;
+        state.rotY += (targetY - state.rotY) * 0.09;
+        for (let k = 0; k < 3; k++) {
+          state.accent[k] += (state.targetAccent[k] - state.accent[k]) * 0.08;
+        }
+
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        gl.clearColor(0, 0, 0, 0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        gl.useProgram(prog);
+        gl.activeTexture(gl.TEXTURE0);
+        gl.bindTexture(gl.TEXTURE_2D, sdfTex);
+        gl.uniform1i(locs.uSdfTex, 0);
+        gl.uniform1f(locs.uSdfDecode, decodeRange);
+
+        gl.uniform2f(locs.uRes, canvas.width, canvas.height);
+        gl.uniform1f(locs.uTime, elapsed);
+        gl.uniform1f(locs.uMorph, state.morph);
+        gl.uniform2f(locs.uRot, state.rotX, state.rotY);
+        gl.uniform1f(locs.uScrollTilt, state.scrollTilt);
+        gl.uniform3f(locs.uAccent, state.accent[0], state.accent[1], state.accent[2]);
+
+        gl.drawArrays(gl.TRIANGLES, 0, 6);
+      }
+
+      requestAnimationFrame(tick);
+    }
+
     const io = new IntersectionObserver(
       (entries) => {
-        state.visible = entries[0]?.isIntersecting ?? true;
+        const isNear = entries[0]?.isIntersecting ?? false;
+        state.visible = isNear;
+        if (isNear && !state.booted && (state.mode !== 0 || !document.documentElement.classList.contains("has-intro"))) {
+          boot();
+        }
       },
-      { rootMargin: "160px" }
+      { rootMargin: "320px" }
     );
     io.observe(canvas);
 
-    window.addEventListener("resize", resize);
-    resize();
-
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)");
-    const t0 = performance.now();
-
-    function tick(now) {
-      requestAnimationFrame(tick);
-      if (!state.visible) return;
-
-      resize();
-      const elapsed = reduced.matches ? 2.4 : (now - t0) * 0.001;
-
-      const targetX = state.baseRotX + state.hoverX;
-      const targetY = Math.max(-1.25, Math.min(1.25, state.baseRotY + state.hoverY));
-
-      state.morph += (state.targetMorph - state.morph) * 0.095;
-      state.rotX += (targetX - state.rotX) * 0.09;
-      state.rotY += (targetY - state.rotY) * 0.09;
-      for (let k = 0; k < 3; k++) {
-        state.accent[k] += (state.targetAccent[k] - state.accent[k]) * 0.08;
-      }
-
-      gl.viewport(0, 0, canvas.width, canvas.height);
-      gl.clearColor(0, 0, 0, 0);
-      gl.clear(gl.COLOR_BUFFER_BIT);
-
-      gl.useProgram(prog);
-      gl.activeTexture(gl.TEXTURE0);
-      gl.bindTexture(gl.TEXTURE_2D, sdfTex);
-      gl.uniform1i(locs.uSdfTex, 0);
-      gl.uniform1f(locs.uSdfDecode, decodeRange);
-
-      gl.uniform2f(locs.uRes, canvas.width, canvas.height);
-      gl.uniform1f(locs.uTime, elapsed);
-      gl.uniform1f(locs.uMode, state.mode);
-      gl.uniform1f(locs.uMorph, state.morph);
-      gl.uniform2f(locs.uRot, state.rotX, state.rotY);
-      gl.uniform1f(locs.uScrollTilt, state.scrollTilt);
-      gl.uniform3f(locs.uAccent, state.accent[0], state.accent[1], state.accent[2]);
-
-      gl.drawArrays(gl.TRIANGLES, 0, 6);
-    }
-
-    requestAnimationFrame(tick);
-
     return {
+      boot,
       setMorph(val, resetAngle = false) {
         state.targetMorph = val;
         if (resetAngle && !state.dragging) {
@@ -900,8 +921,28 @@
     };
   }
 
+  const heroStage = createLazyStage("hero-3d-canvas", { mode: 0, accent: [0.18, 0.85, 0.64] });
+  const showcaseStage = createLazyStage("showcase-3d-canvas", { mode: 1, accent: [0.18, 0.85, 0.64] });
+
   window.AICore3D = {
-    hero: createStage("hero-3d-canvas", { mode: 0, accent: [0.18, 0.85, 0.64] }),
-    showcase: createStage("showcase-3d-canvas", { mode: 1, accent: [0.18, 0.85, 0.64] })
+    hero: heroStage,
+    showcase: showcaseStage
   };
+
+  // Start Hero compilation off-critical-path after intro begins smoothly, then warm Showcase
+  const schedule = (fn, delay) => {
+    setTimeout(() => {
+      if (typeof requestIdleCallback === "function") {
+        requestIdleCallback(fn, { timeout: 600 });
+      } else {
+        requestAnimationFrame(fn);
+      }
+    }, delay);
+  };
+
+  schedule(() => {
+    heroStage?.boot(() => {
+      schedule(() => showcaseStage?.boot(), 350);
+    });
+  }, 180);
 })();

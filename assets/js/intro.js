@@ -17,6 +17,7 @@
     closed = true;
     root.classList.remove("has-intro");
     document.getElementById("aperture-intro")?.remove();
+    window.dispatchEvent(new Event("intro:done"));
   };
   const timer = setTimeout(finish, 3650);
   const skip = () => {
