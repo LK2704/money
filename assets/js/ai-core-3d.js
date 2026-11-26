@@ -11,15 +11,15 @@
 
   const LOGO_SPECS = [
     {
-      // 0: ChatGPT / OpenAI 6-Fold Blossom Knot
+      // 0: OpenAI Codex (6-Petal Cloud Badge + Carved >_ Terminal Prompt)
       viewBox: 24,
       fill: 0.67,
       offsetY: 0,
       fillRule: "evenodd",
-      d: "M22.282 9.821a6 6 0 0 0-.516-4.91a6.05 6.05 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a6 6 0 0 0-3.998 2.9a6.05 6.05 0 0 0 .743 7.097a5.98 5.98 0 0 0 .51 4.911a6.05 6.05 0 0 0 6.515 2.9A6 6 0 0 0 13.26 24a6.06 6.06 0 0 0 5.772-4.206a6 6 0 0 0 3.997-2.9a6.06 6.06 0 0 0-.747-7.073M13.26 22.43a4.48 4.48 0 0 1-2.876-1.04l.141-.081l4.779-2.758a.8.8 0 0 0 .392-.681v-6.737l2.02 1.168a.07.07 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494M3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085l4.783 2.759a.77.77 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646M2.34 7.896a4.5 4.5 0 0 1 2.366-1.973V11.6a.77.77 0 0 0 .388.677l5.815 3.354l-2.02 1.168a.08.08 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.08.08 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667m2.01-3.023l-.141-.085l-4.774-2.782a.78.78 0 0 0-.785 0L9.409 9.23V6.897a.07.07 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.8.8 0 0 0-.393.681zm1.097-2.365l2.602-1.5l2.607 1.5v2.999l-2.597 1.5l-2.607-1.5Z"
+      d: "M8.086.457a6.105 6.105 0 013.046-.415c1.333.153 2.521.72 3.564 1.7a.117.117 0 00.107.029c1.408-.346 2.762-.224 4.061.366l.063.03.154.076c1.357.703 2.33 1.77 2.918 3.198.278.679.418 1.388.421 2.126a5.655 5.655 0 01-.18 1.631.167.167 0 00.04.155 5.982 5.982 0 011.578 2.891c.385 1.901-.01 3.615-1.183 5.14l-.182.22a6.063 6.063 0 01-2.934 1.851.162.162 0 00-.108.102c-.255.736-.511 1.364-.987 1.992-1.199 1.582-2.962 2.462-4.948 2.451-1.583-.008-2.986-.587-4.21-1.736a.145.145 0 00-.14-.032c-.518.167-1.04.191-1.604.185a5.924 5.924 0 01-2.595-.622 6.058 6.058 0 01-2.146-1.781c-.203-.269-.404-.522-.551-.821a7.74 7.74 0 01-.495-1.283 6.11 6.11 0 01-.017-3.064.166.166 0 00.008-.074.115.115 0 00-.037-.064 5.958 5.958 0 01-1.38-2.202 5.196 5.196 0 01-.333-1.589 6.915 6.915 0 01.188-2.132c.45-1.484 1.309-2.648 2.577-3.493.282-.188.55-.334.802-.438.286-.12.573-.22.861-.304a.129.129 0 00.087-.087A6.016 6.016 0 015.635 2.31C6.315 1.464 7.132.846 8.086.457zm-.804 7.85a.848.848 0 00-1.473.842l1.694 2.965-1.688 2.848a.849.849 0 001.46.864l1.94-3.272a.849.849 0 00.007-.854l-1.94-3.393zm5.446 6.24a.849.849 0 000 1.695h4.848a.849.849 0 000-1.696h-4.848z"
     },
     {
-      // 1: Claude / Anthropic Radial Starburst Spark
+      // 1: Claude Code / Anthropic 12-Ray Starburst Spark
       viewBox: 16,
       fill: 0.69,
       offsetY: 0,
@@ -377,14 +377,10 @@
     }
   `;
 
-  // Specialized lean Showcase shader (NO laptop dead code -> compiles 4x faster!)
+  // Specialized lean Showcase shader (Codex · Claude Code · Google Antigravity)
   const FRAG_SHOWCASE_MAP = `
-    vec2 evalChatGPT(vec3 p, float dLogo0, float t) {
-      float rXY = length(p.xy);
-      float safeX = (rXY < 0.001) ? 0.001 : p.x;
-      float weaveMask = smoothstep(0.24, 0.68, rXY);
-      float weaveZ = p.z + 0.020 * weaveMask * sin(6.0 * atan(p.y, safeX));
-      vec2 logo = sdSculptedLogo(dLogo0, weaveZ, 0.165, 0.024);
+    vec2 evalCodex(vec3 p, float dLogo0, float t) {
+      vec2 logo = sdSculptedLogo(dLogo0, p.z, 0.16, 0.028);
 
       vec3 rp = p;
       rp.xy = rot2(0.38) * rp.xy;
@@ -403,7 +399,7 @@
       return (dCry < dMet) ? vec2(dCry, 2.0) : vec2(dMet, 1.0);
     }
 
-    vec2 evalClaude(vec3 p, float dLogo1, float t) {
+    vec2 evalClaudeCode(vec3 p, float dLogo1, float t) {
       float radialHub = 0.075 * exp(-dot(p.xy, p.xy) * 2.4);
       vec2 logo = sdSculptedLogo(dLogo1, p.z, 0.145 + radialHub, 0.020);
 
@@ -459,17 +455,17 @@
       float m = clamp(uMorph, 0.0, 2.0);
 
       if (m < 0.01) {
-        return evalChatGPT(q, sdfs.x, uTime);
+        return evalCodex(q, sdfs.x, uTime);
       } else if (m < 1.0) {
         float f = smoothstep(0.0, 1.0, m);
-        vec2 a = evalChatGPT(q, sdfs.x, uTime);
-        vec2 b = evalClaude(q, sdfs.y, uTime);
+        vec2 a = evalCodex(q, sdfs.x, uTime);
+        vec2 b = evalClaudeCode(q, sdfs.y, uTime);
         return vec2(mix(a.x, b.x, f), (f < 0.5) ? a.y : b.y);
       } else if (m < 1.01) {
-        return evalClaude(q, sdfs.y, uTime);
+        return evalClaudeCode(q, sdfs.y, uTime);
       } else if (m < 1.99) {
         float f = smoothstep(1.0, 2.0, m);
-        vec2 a = evalClaude(q, sdfs.y, uTime);
+        vec2 a = evalClaudeCode(q, sdfs.y, uTime);
         vec2 b = evalAntigravity(q, sdfs.z, uTime);
         return vec2(mix(a.x, b.x, f), (f < 0.5) ? a.y : b.y);
       } else {

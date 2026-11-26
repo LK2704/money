@@ -1,6 +1,6 @@
 /* ==========================================================================
    SCROLL CHOREOGRAPHY & INTERACTIVE INVESTMENT PROPOSAL LOGIC (site.js)
-   - GSAP ScrollTrigger pinned 3-AI 3D logo showcase (ChatGPT, Claude, Antigravity)
+   - GSAP ScrollTrigger pinned 3-AI 3D logo showcase (Codex, Claude Code, Antigravity)
    - Hero 3D Workstation Laptop camera scroll scrub
    - Parent-friendly Career & ROI Tabs, Live Salary-Ratio / Web-Income / 3D Light,
      15M Salary-anchored 10K/day Budget Worksheet, Q&A & Decision Console.
@@ -137,32 +137,32 @@
      ======================================================================== */
   const CHAPTERS = [
     {
-      feature: "ChatGPT",
-      logoId: "#logo-openai",
-      label: "OpenAI · Giảng giải nguyên lý & tư duy thuật toán 24/7",
-      title: "Người thầy giảng giải cặn kẽ mọi nguyên lý lập trình.",
-      desc: "Mỗi khi gặp một tính năng Web phức tạp hay một bài toán logic hóc búa, ChatGPT phân tích bản chất từng bước bằng ví dụ thực tế dễ hiểu, giúp con nắm chắc gốc rễ thuật toán và cấu trúc vận hành trước khi bắt tay vào xây dựng.",
-      insight: "Giống như có một kỹ sư lập trình giàu kinh nghiệm ngồi kèm riêng ngay tại bàn học.",
+      feature: "Codex",
+      logoId: "#logo-codex",
+      label: "OpenAI · Trợ lý lập trình tự động & kiểm thử mã nguồn",
+      title: "Chuyên gia tự động viết mã, rà soát và gỡ lỗi kỹ thuật.",
+      desc: "Là công cụ lập trình chuyên sâu của OpenAI, Codex đọc hiểu trực tiếp cấu trúc tệp của dự án, tự động phát hiện sai sót logic, viết các khối chức năng tính toán và giải thích từng bước xử lý giúp con nắm chắc kỹ thuật ngay trong lúc thực hành.",
+      insight: "Giúp con giải quyết trọn vẹn những đoạn lỗi hóc búa chỉ trong vài phút thay vì bế tắc cả buổi tối.",
       accent: [0.18, 0.85, 0.64], // Jade Emerald
       colorCss: "#5ce6b8"
     },
     {
-      feature: "Claude",
-      logoId: "#logo-claude",
-      label: "Anthropic · Mã nguồn chuẩn mực & thẩm mỹ trình bày",
-      title: "Chuyên gia tối ưu mã nguồn và thiết kế Website chỉn chu.",
-      desc: "Trong lĩnh vực xây dựng Website chuyên nghiệp, Claude dẫn đầu ở khả năng sắp xếp cấu trúc trang mạch lạc, tối ưu hiển thị đẹp trên cả điện thoại lẫn máy tính và phát hiện sớm lỗi kỹ thuật giúp con rèn tác phong làm nghề bài bản.",
-      insight: "Giúp sản phẩm Web con làm đạt độ hoàn thiện đủ chuẩn bàn giao cho khách hàng.",
+      feature: "Claude Code",
+      logoId: "#logo-claudecode",
+      label: "Anthropic · Kỹ sư kiến trúc hệ thống & thẩm mỹ Web",
+      title: "Chuyên gia thiết kế giao diện tinh tế và mã nguồn chuẩn mực.",
+      desc: "Trong giới phát triển Website chuyên nghiệp, Claude Code nổi tiếng nhất về khả năng tổ chức mã nguồn sạch sẽ, xây dựng bố cục giao diện sang trọng, hiển thị mượt trên cả điện thoại lẫn máy tính và rèn cho con tư duy kỹ thuật bài bản ngay từ đầu.",
+      insight: "Đảm bảo mỗi trang Web con làm ra đều đạt độ hoàn thiện thẩm mỹ đủ chuẩn bàn giao cho khách hàng.",
       accent: [0.90, 0.50, 0.36], // Warm Copper-Terracotta
       colorCss: "#f09a7e"
     },
     {
       feature: "Antigravity",
       logoId: "#logo-antigravity",
-      label: "Google DeepMind · Môi trường tự động dựng trọn dự án Web",
-      title: "Biến ý tưởng thành Website thương mại hoàn chỉnh.",
-      desc: "Khác với khung hỏi đáp đơn lẻ, Google Antigravity là không gian làm việc thế hệ mới giúp kết nối đồng bộ toàn bộ bố cục giao diện, hiệu ứng chuyển động mượt và đồ họa 3 chiều — chính là công cụ đã cùng con hoàn thiện trang thuyết trình này.",
-      insight: "Rút ngắn thời gian hoàn thiện một Website từ nhiều tuần xuống chỉ còn vài buổi tối.",
+      label: "Google DeepMind · Không gian điều phối & dựng trọn dự án Web",
+      title: "Môi trường tích hợp biến ý tưởng thành Website chạy thật.",
+      desc: "Khác với công cụ dòng lệnh rời rạc, Google Antigravity là không gian làm việc thế hệ mới kết nối đồng bộ toàn bộ mã nguồn, giao diện tương tác, hiệu ứng chuyển động mượt và đồ họa 3 chiều — chính là nơi con trực tiếp dựng và hoàn thiện trang Web này.",
+      insight: "Biến ý tưởng trên giấy thành sản phẩm Website hoàn chỉnh chỉ trong vài buổi tối thực hành.",
       accent: [0.44, 0.74, 0.98], // Arctic Celestial Blue
       colorCss: "#84c5ff"
     }
@@ -488,8 +488,8 @@
       },
       renderLive(host) {
         const presets = [
-          { label: "Ngọc lục bảo (ChatGPT)", rgb: [0.18, 0.85, 0.64] },
-          { label: "Đồng ấm (Claude)", rgb: [0.90, 0.50, 0.36] },
+          { label: "Ngọc lục bảo (Codex)", rgb: [0.18, 0.85, 0.64] },
+          { label: "Đồng ấm (Claude Code)", rgb: [0.90, 0.50, 0.36] },
           { label: "Băng lam (Antigravity)", rgb: [0.44, 0.74, 0.98] },
           { label: "Vàng kim (Tương lai)", rgb: [0.90, 0.77, 0.50] }
         ];
@@ -630,7 +630,7 @@
     } else if (days <= 45) {
       milestone = `Sau ${days} ngày: nắm vững kiến trúc dàn trang, thuật toán tương tác và tự xây dựng 4–5 sản phẩm Web thực tế chạy mượt trên điện thoại và máy tính.`;
     } else if (days <= 105) {
-      milestone = `Sau ${days} ngày: phối hợp thành thạo ChatGPT, Claude, Antigravity để dựng Website nhiều tệp và sở hữu bộ hồ sơ dự án đủ chuẩn đi nhận việc.`;
+      milestone = `Sau ${days} ngày: phối hợp thành thạo Codex, Claude Code và Antigravity để dựng Website nhiều tệp và sở hữu bộ hồ sơ dự án đủ chuẩn đi nhận việc.`;
     } else {
       milestone = `Sau ${days} ngày: đủ năng lực thiết kế Website thương mại trọn gói — hướng tới tự tạo thu nhập và hoàn lại khoản đầu tư 10.000 ₫/ngày.`;
     }

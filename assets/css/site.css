@@ -942,12 +942,13 @@ main,
 }
 
 #stage-feature {
-  font-size: clamp(38px, 4.6vw, 66px);
+  font-size: clamp(32px, 4vw, 56px);
   line-height: 1;
   letter-spacing: -0.04em;
   font-weight: 500;
   color: var(--signal);
   font-variant-numeric: tabular-nums;
+  white-space: nowrap;
   transition: color 300ms var(--ease);
 }
 
