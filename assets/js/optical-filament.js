@@ -29,15 +29,9 @@
   let celebrationTime = 0;
 
   function computePath() {
-    if (window.innerWidth <= 960) {
-      xs = [];
-      ys = [];
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      return;
-    }
     width = window.innerWidth;
     height = window.innerHeight;
-    dpr = Math.min(window.devicePixelRatio || 1, 1.35);
+    dpr = Math.min(window.devicePixelRatio || 1, width <= 768 ? 1.75 : 1.35);
     canvas.width = Math.round(width * dpr);
     canvas.height = Math.round(height * dpr);
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -59,7 +53,7 @@
       const rightMarginX = Math.min(width - 16, Math.max(width - 54, width * 0.968));
 
       if (idx > 0 && desktop) side = -side;
-      const targetX = desktop ? (side < 0 ? leftMarginX : rightMarginX) : 14;
+      const targetX = desktop ? (side < 0 ? leftMarginX : rightMarginX) : 10;
 
       if (idx === 0) {
         anchors.push({ x: targetX, y: Math.max(0, top - 120) });
@@ -148,11 +142,12 @@
     while (last > 0 && ys[last] > scroll + height + 140) last--;
 
     if (last > first) {
+      const mobile = width <= 1080;
       const strands = [
-        { color: "#1d9e75", width: 8, alpha: 0.05, phase: 0 },
-        { color: "#5ce6b8", width: 1.5, alpha: 0.34, phase: 0 },
-        { color: "#e4c482", width: 1.1, alpha: 0.24, phase: 2.1 },
-        { color: "#68b5f8", width: 1.1, alpha: 0.2, phase: 4.2 }
+        { color: "#1d9e75", width: mobile ? 5 : 8, alpha: mobile ? 0.045 : 0.05, phase: 0 },
+        { color: "#5ce6b8", width: mobile ? 1.25 : 1.5, alpha: mobile ? 0.36 : 0.34, phase: 0 },
+        { color: "#e4c482", width: mobile ? 0.95 : 1.1, alpha: mobile ? 0.24 : 0.24, phase: 2.1 },
+        { color: "#68b5f8", width: mobile ? 0.95 : 1.1, alpha: mobile ? 0.20 : 0.2, phase: 4.2 }
       ];
 
       for (const st of strands) {
@@ -161,7 +156,7 @@
         ctx.globalAlpha = st.alpha;
         ctx.beginPath();
         for (let i = first; i <= last; i += 2) {
-          const braid = Math.sin(i * 0.035 + st.phase + (reduced.matches ? 0 : now * 0.0012)) * (width > 1080 ? 9 : 3.5);
+          const braid = Math.sin(i * 0.035 + st.phase + (reduced.matches ? 0 : now * 0.0012)) * (mobile ? 2.0 : 9);
           const px = xs[i] + braid;
           const py = ys[i];
           if (i === first) ctx.moveTo(px, py);
@@ -182,12 +177,12 @@
       }
 
       const head = Math.min(ys.length - 2, Math.max(1, Math.floor(cometIdx)));
-      const tail = Math.max(0, head - 28);
+      const tail = Math.max(0, head - (mobile ? 22 : 28));
       for (let i = tail; i <= head; i++) {
         const k = (i - tail) / Math.max(1, head - tail);
         ctx.strokeStyle = "#dffaf0";
         ctx.globalAlpha = k * k * 0.85;
-        ctx.lineWidth = 0.8 + k * 2.4;
+        ctx.lineWidth = (mobile ? 0.7 : 0.8) + k * (mobile ? 1.8 : 2.4);
         ctx.beginPath();
         ctx.moveTo(xs[i], ys[i]);
         ctx.lineTo(xs[i + 1], ys[i + 1]);
@@ -196,16 +191,18 @@
 
       const hx = xs[head];
       const hy = ys[head];
-      const g = ctx.createRadialGradient(hx, hy, 0, hx, hy, 24);
+      const glowR = mobile ? 14 : 24;
+      const g = ctx.createRadialGradient(hx, hy, 0, hx, hy, glowR);
       g.addColorStop(0, "#ffffff");
-      g.addColorStop(0.25, "rgba(92, 230, 184, 0.65)");
+      g.addColorStop(0.28, "rgba(92, 230, 184, 0.65)");
       g.addColorStop(1, "rgba(29, 158, 117, 0)");
       ctx.globalAlpha = 1;
       ctx.fillStyle = g;
-      ctx.fillRect(hx - 24, hy - 24, 48, 48);
+      ctx.fillRect(hx - glowR, hy - glowR, glowR * 2, glowR * 2);
 
       // Station rings & ripples
       let activeAnim = Math.abs(targetIdx - cometIdx) > 0.4;
+      const ringR = mobile ? 4.2 : 6.5;
       for (const s of stations) {
         if (!s.litAt && cometIdx >= s.idx - 2) {
           s.litAt = now || 1;
@@ -216,9 +213,9 @@
 
         ctx.globalAlpha = s.litAt ? 0.85 : 0.28;
         ctx.strokeStyle = s.litAt ? "#9ef3d8" : "#4b6b63";
-        ctx.lineWidth = 1.3;
+        ctx.lineWidth = mobile ? 1.15 : 1.3;
         ctx.beginPath();
-        ctx.arc(sx, sy, 6.5, 0, Math.PI * 2);
+        ctx.arc(sx, sy, ringR, 0, Math.PI * 2);
         ctx.stroke();
 
         if (s.litAt && !reduced.matches) {
@@ -226,9 +223,9 @@
           if (p < 1) {
             activeAnim = true;
             const ease = 1 - Math.pow(1 - p, 3);
-            ctx.globalAlpha = (1 - p) * 0.65;
+            ctx.globalAlpha = (1 - p) * (mobile ? 0.52 : 0.65);
             ctx.beginPath();
-            ctx.arc(sx, sy, 8 + ease * 58, 0, Math.PI * 2);
+            ctx.arc(sx, sy, ringR + 2 + ease * (mobile ? 28 : 58), 0, Math.PI * 2);
             ctx.stroke();
           }
         }

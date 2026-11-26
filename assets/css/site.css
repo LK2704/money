@@ -1898,7 +1898,14 @@ td.selected-col {
 
 @media (max-width: 960px) {
   .optical-ribbon {
-    display: none !important;
+    opacity: 0.85;
+  }
+  .frame,
+  #congcu > .showcase-head,
+  #congcu > .product-story,
+  #congcu > .live-workbench {
+    padding-left: 30px;
+    padding-right: 22px;
   }
   .nav {
     min-height: 72px;
@@ -2110,7 +2117,18 @@ td.selected-col {
 /* Dedicated Small-Phone Ergonomics (360px - 600px portrait screens) */
 @media (max-width: 600px) {
   :root {
-    --gutter: 24px;
+    --gutter: 22px;
+  }
+  .frame,
+  #congcu > .showcase-head,
+  #congcu > .product-story,
+  #congcu > .live-workbench {
+    padding-left: 28px;
+    padding-right: 20px;
+  }
+  .nav-links {
+    left: 28px;
+    right: 20px;
   }
   body {
     font-size: 15px;
