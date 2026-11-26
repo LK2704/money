@@ -713,6 +713,11 @@
   function setDecisionMessage(baseMsg) {
     lastDecisionBase = baseMsg;
     resultBox.textContent = adapt(baseMsg);
+    resultBox.classList.remove("is-spawning");
+    if (baseMsg && !reduced.matches) {
+      void resultBox.offsetWidth;
+      resultBox.classList.add("is-spawning");
+    }
   }
 
   byId("agree-standard").addEventListener("click", () => {
