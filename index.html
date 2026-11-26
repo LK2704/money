@@ -1,0 +1,791 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#060809" />
+    <meta
+      name="description"
+      content="Khoản đầu tư cho tương lai: 10.000 ₫ mỗi ngày (chỉ 2% thu nhập ngày) cho bộ 3 công cụ AI (ChatGPT, Claude, Google Antigravity) để tự học thiết kế & lập trình Website chuyên nghiệp, rèn nghề sớm và tạo cơ hội thu nhập bền vững."
+    />
+    <title>Khoản Đầu Tư Cho Tương Lai — 10.000 ₫/ngày học làm Web cùng AI</title>
+    <link
+      rel="icon"
+      type="image/svg+xml"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23060809'/%3E%3Cpolygon points='16 5 26 24 6 24' fill='none' stroke='%235ce6b8' stroke-width='1.8'/%3E%3Ccircle cx='16' cy='17' r='2.6' fill='%23e4c482'/%3E%3C/svg%3E"
+    />
+    <link rel="stylesheet" href="assets/css/site.css" />
+    <script src="assets/js/intro.js"></script>
+    <script src="assets/vendor/gsap.min.js" defer></script>
+    <script src="assets/vendor/ScrollTrigger.min.js" defer></script>
+    <script src="assets/js/ai-core-3d.js" defer></script>
+    <script src="assets/js/optical-filament.js" defer></script>
+    <script src="assets/js/site.js" defer></script>
+  </head>
+  <body>
+    <!-- Cinematic Skippable Optical Aperture Intro (~3.4s) -->
+    <div class="aperture-intro" id="aperture-intro" aria-hidden="true">
+      <svg class="intro-strands" viewBox="0 0 1600 900" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <g class="glow">
+          <path pathLength="1" d="M-80 740C320 740 440 465 800 450" />
+          <path pathLength="1" d="M1680 160C1280 160 1160 435 800 450" />
+        </g>
+        <g class="core">
+          <path pathLength="1" d="M-80 740C320 740 440 465 800 450" />
+          <path pathLength="1" d="M-80 785C340 775 460 480 800 450" />
+          <path pathLength="1" d="M1680 160C1280 160 1160 435 800 450" />
+          <path pathLength="1" d="M1680 115C1260 125 1140 420 800 450" />
+        </g>
+      </svg>
+      <div class="intro-mark">
+        <svg class="intro-prism" viewBox="0 0 120 120" focusable="false">
+          <polygon class="intro-prism-trace" pathLength="1" points="60 14 104 92 16 92" />
+          <ellipse class="intro-prism-trace" pathLength="1" cx="60" cy="68" rx="48" ry="15" />
+          <circle cx="60" cy="54" r="4" fill="#e4c482" />
+        </svg>
+        <span class="intro-kicker">10.000 ₫ / NGÀY · AI &amp; NGHỀ LÀM WEB</span>
+        <span class="intro-sub">Khoản Đầu Tư Cho Tương Lai.</span>
+      </div>
+    </div>
+
+    <a class="skip" href="#noidung">Đến nội dung chính</a>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position: absolute" aria-hidden="true">
+      <defs>
+        <symbol id="arrow" viewBox="0 0 24 24">
+          <path d="M5 19 19 5M5 5h14v14" />
+        </symbol>
+        <symbol id="plus" viewBox="0 0 24 24">
+          <path d="M12 5v14M5 12h14" />
+        </symbol>
+        <symbol id="logo-openai" viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            fill-rule="evenodd"
+            d="M22.282 9.821a6 6 0 0 0-.516-4.91a6.05 6.05 0 0 0-6.51-2.9A6.065 6.065 0 0 0 4.981 4.18a6 6 0 0 0-3.998 2.9a6.05 6.05 0 0 0 .743 7.097a5.98 5.98 0 0 0 .51 4.911a6.05 6.05 0 0 0 6.515 2.9A6 6 0 0 0 13.26 24a6.06 6.06 0 0 0 5.772-4.206a6 6 0 0 0 3.997-2.9a6.06 6.06 0 0 0-.747-7.073M13.26 22.43a4.48 4.48 0 0 1-2.876-1.04l.141-.081l4.779-2.758a.8.8 0 0 0 .392-.681v-6.737l2.02 1.168a.07.07 0 0 1 .038.052v5.583a4.504 4.504 0 0 1-4.494 4.494M3.6 18.304a4.47 4.47 0 0 1-.535-3.014l.142.085l4.783 2.759a.77.77 0 0 0 .78 0l5.843-3.369v2.332a.08.08 0 0 1-.033.062L9.74 19.95a4.5 4.5 0 0 1-6.14-1.646M2.34 7.896a4.5 4.5 0 0 1 2.366-1.973V11.6a.77.77 0 0 0 .388.677l5.815 3.354l-2.02 1.168a.08.08 0 0 1-.071 0l-4.83-2.786A4.504 4.504 0 0 1 2.34 7.872zm16.597 3.855l-5.833-3.387L15.119 7.2a.08.08 0 0 1 .071 0l4.83 2.791a4.494 4.494 0 0 1-.676 8.105v-5.678a.79.79 0 0 0-.407-.667m2.01-3.023l-.141-.085l-4.774-2.782a.78.78 0 0 0-.785 0L9.409 9.23V6.897a.07.07 0 0 1 .028-.061l4.83-2.787a4.5 4.5 0 0 1 6.68 4.66zm-12.64 4.135l-2.02-1.164a.08.08 0 0 1-.038-.057V6.075a4.5 4.5 0 0 1 7.375-3.453l-.142.08L8.704 5.46a.8.8 0 0 0-.393.681zm1.097-2.365l2.602-1.5l2.607 1.5v2.999l-2.597 1.5l-2.607-1.5Z"
+          />
+        </symbol>
+        <symbol id="logo-claude" viewBox="0 0 16 16">
+          <path
+            fill="currentColor"
+            d="m3.127 10.604 3.135-1.76.053-.153-.053-.085H6.11l-.525-.032-1.791-.048-1.554-.065-1.505-.08-.38-.081L0 7.832l.036-.234.32-.214.455.04 1.009.069 1.513.105 1.097.064 1.626.17h.259l.036-.105-.089-.065-.068-.064-1.566-1.062-1.695-1.121-.887-.646-.48-.327-.243-.306-.104-.67.435-.48.585.04.15.04.593.456 1.267.981 1.654 1.218.242.202.097-.068.012-.049-.109-.181-.9-1.626-.96-1.655-.428-.686-.113-.411a2 2 0 0 1-.068-.484l.496-.674L4.446 0l.662.089.279.242.411.94.666 1.48 1.033 2.014.302.597.162.553.06.17h.105v-.097l.085-1.134.157-1.392.154-1.792.052-.504.25-.605.497-.327.387.186.319.456-.045.294-.19 1.23-.37 1.93-.243 1.29h.142l.161-.16.654-.868 1.097-1.372.484-.545.565-.601.363-.287h.686l.505.751-.226.775-.707.895-.585.759-.839 1.13-.524.904.048.072.125-.012 1.897-.403 1.024-.186 1.223-.21.553.258.06.263-.218.536-1.307.323-1.533.307-2.284.54-.028.02.032.04 1.029.098.44.024h1.077l2.005.15.525.346.315.424-.053.323-.807.411-3.631-.863-.872-.218h-.12v.073l.726.71 1.331 1.202 1.667 1.55.084.383-.214.302-.226-.032-1.464-1.101-.565-.497-1.28-1.077h-.084v.113l.295.432 1.557 2.34.08.718-.112.234-.404.141-.444-.08-.911-1.28-.94-1.44-.759-1.291-.093.053-.448 4.821-.21.246-.484.186-.403-.307-.214-.496.214-.98.258-1.28.21-1.016.19-1.263.112-.42-.008-.028-.092.012-.953 1.307-1.448 1.957-1.146 1.227-.274.109-.477-.247.045-.44.266-.39Z"
+          />
+        </symbol>
+        <symbol id="logo-antigravity" viewBox="0 0 24 24">
+          <path
+            fill="currentColor"
+            d="M12.006 3.02q1.736-.02 2.682 1.303q.945 1.323 1.648 2.985q.612 1.46 1.212 3.288q.6 1.829 1.256 3.683q.65 1.779 1.387 3.342q.736 1.564 1.703 2.643q.123.148.118.323t-.13.284q-.142.129-.31.135t-.31-.117q-1.745-1.627-2.933-3.434q-1.189-1.807-2.296-3.02q-.85-.95-1.823-1.51q-.972-.56-2.204-.54q-1.233-.02-2.205.54t-1.822 1.51q-1.108 1.213-2.296 3.02T2.75 20.889q-.14.123-.31.117t-.311-.135q-.123-.11-.129-.284t.117-.323q.967-1.06 1.704-2.633t1.387-3.352q.655-1.854 1.255-3.683t1.212-3.288q.704-1.662 1.649-2.985t2.682-1.304Z"
+          />
+        </symbol>
+      </defs>
+    </svg>
+
+    <nav class="nav frame" aria-label="Điều hướng chính">
+      <a class="brand" href="#">Khoản Đầu Tư Cho Tương Lai.</a>
+      <button class="menu-toggle" type="button" aria-controls="nav-links" aria-expanded="false">
+        Mục lục <svg class="arrow" aria-hidden="true"><use href="#plus" /></svg>
+      </button>
+      <div class="nav-links" id="nav-links">
+        <a href="#lydo">Giá trị nghề Web</a>
+        <a href="#congcu">3 Công cụ AI</a>
+        <a href="#vibecode">Bài toán hoàn vốn</a>
+        <a href="#chiphi">Tỷ lệ lương</a>
+        <a href="#camket">Cam kết</a>
+        <a class="nav-action text-link" href="#quyetdinh">
+          Xem xét đề xuất
+          <svg class="arrow" aria-hidden="true"><use href="#arrow" /></svg>
+        </a>
+      </div>
+    </nav>
+
+    <main id="noidung">
+      <!-- ================================================================
+           HERO: 3D STUDIO LAPTOP PROJECTING LIVE WEBSITE + CYCLING AI ENGINE
+           ================================================================ -->
+      <header class="hero frame">
+        <div class="hero-opening">
+          <h1>
+            <span>Khoản đầu tư</span><br />
+            <span>cho tương lai.</span>
+          </h1>
+          <div class="hero-letter">
+            <p>
+              Chỉ <strong>10.000 ₫ mỗi ngày</strong> — tương đương đúng <strong>2% thu nhập ngày của Mẹ</strong> (chưa tới 10 phút làm việc) — để trang bị bộ 3 công cụ trí tuệ nhân tạo bản chuẩn, biến chiếc máy tính tại nhà thành xưởng thực hành thiết kế Website chuyên nghiệp và mở ra một nghề kỹ thuật có khả năng tự tạo thu nhập sớm.
+            </p>
+            <a class="button" href="#lydo">
+              Xem lý do nên đầu tư sớm
+              <svg class="arrow" aria-hidden="true"><use href="#arrow" /></svg>
+            </a>
+            <p class="hero-assurance">
+              300.000 ₫/tháng (2% mức lương 15 triệu) · Giữ vững thành tích học trên lớp · Mỗi Chủ Nhật báo cáo 1 sản phẩm Web mới chạy thật.
+            </p>
+          </div>
+        </div>
+
+        <figure>
+          <div
+            class="reactor-plate"
+            id="hero-reactor-plate"
+            role="img"
+            aria-label="Mô hình 3D máy tính đang dựng các lớp giao diện Website nổi 3 chiều kết hợp lõi logo trí tuệ nhân tạo phía trên, có thể cầm chuột kéo xoay 360 độ"
+          >
+            <canvas class="webgl-stage-canvas" id="hero-3d-canvas"></canvas>
+          </div>
+          <figcaption class="plate-caption">
+            <div>
+              <strong class="hero-ai-trio">
+                <span class="trio-item"><svg class="inline-ai-logo" aria-hidden="true"><use href="#logo-openai" /></svg>ChatGPT</span>
+                <span class="trio-sep" aria-hidden="true">·</span>
+                <span class="trio-item"><svg class="inline-ai-logo" aria-hidden="true"><use href="#logo-claude" /></svg>Claude</span>
+                <span class="trio-sep" aria-hidden="true">·</span>
+                <span class="trio-item"><svg class="inline-ai-logo" aria-hidden="true"><use href="#logo-antigravity" /></svg>Google Antigravity</span>
+              </strong>
+              <p id="hero-config">
+                Mô hình xưởng lập trình Web 3D kết nối trực tiếp bộ 3 trí tuệ nhân tạo (Mẹ cầm chuột kéo trên hình 3D để xoay)
+              </p>
+            </div>
+            <div class="caption-price">
+              <strong id="hero-price">10.000 ₫ / ngày</strong>
+              <p id="hero-price-sub">Chỉ 2% lương ngày của Mẹ (300.000 ₫ / 15 triệu)</p>
+            </div>
+          </figcaption>
+        </figure>
+      </header>
+
+      <!-- ================================================================
+           SECTION 01: WHY INVEST EARLY — CLEAR, CONVINCING PARENT CASE
+           ================================================================ -->
+      <section class="section frame" id="lydo">
+        <div class="letter">
+          <h2 class="reveal">Khoản chi rất nhỏ,<br />nền tảng nghề rất lớn.</h2>
+          <div class="letter-copy reveal">
+            <div class="need-map" aria-label="Bốn lý do thực tế để Mẹ yên tâm đầu tư">
+              <div class="map-head">
+                <span>Băn khoăn thường gặp</span>
+                <span>Giá trị thiết thực khoản đầu tư mang lại</span>
+              </div>
+              <div class="map-row">
+                <div>
+                  <strong>Ngồi máy tính dễ sa đà giải trí</strong>
+                  <span>Thời gian rảnh trôi qua vào mạng xã hội vô ích</span>
+                </div>
+                <svg viewBox="0 0 48 24" aria-hidden="true">
+                  <path d="M2 12h40m-8-8 8 8-8 8" />
+                </svg>
+                <div>
+                  <strong>Chuyển thành giờ rèn nghề nghiêm túc</strong>
+                  <span>Tự tay thiết kế kiến trúc Web, mỗi tuần ra 1 sản phẩm thật</span>
+                </div>
+              </div>
+              <div class="map-row">
+                <div>
+                  <strong>Học trung tâm tốn 2,5 – 3,5 triệu/tháng</strong>
+                  <span>Chiếm ~20% lương tháng, phải đóng trọn khóa lớn</span>
+                </div>
+                <svg viewBox="0 0 48 24" aria-hidden="true">
+                  <path d="M2 12h40m-8-8 8 8-8 8" />
+                </svg>
+                <div>
+                  <strong>Tiết kiệm 90% · Rẻ hơn 2 buổi học thêm</strong>
+                  <span>Chỉ 300.000 ₫/tháng (2% lương), học kèm 1-1 ngay tại nhà</span>
+                </div>
+              </div>
+              <div class="map-row">
+                <div>
+                  <strong>Thời đại mới cạnh tranh việc làm gắt</strong>
+                  <span>Chỉ học lý thuyết sách vở khó nổi bật khi ra trường</span>
+                </div>
+                <svg viewBox="0 0 48 24" aria-hidden="true">
+                  <path d="M2 12h40m-8-8 8 8-8 8" />
+                </svg>
+                <div>
+                  <strong>Đi trước bạn bè 2–3 năm về công nghệ</strong>
+                  <span>Làm chủ trí tuệ nhân tạo &amp; sở hữu bộ dự án thực tế từ sớm</span>
+                </div>
+              </div>
+              <div class="map-row">
+                <div>
+                  <strong>Lo tốn tiền mà không thu lại được gì</strong>
+                  <span>Nhiều khoản học phí khó đo lường kết quả thực tế</span>
+                </div>
+                <svg viewBox="0 0 48 24" aria-hidden="true">
+                  <path d="M2 12h40m-8-8 8 8-8 8" />
+                </svg>
+                <div>
+                  <strong>Cơ hội nhận dự án &amp; tự hoàn vốn sớm</strong>
+                  <span>1 trang Web bán hàng (2–3 triệu) đã hoàn vốn 7–10 tháng AI</span>
+                </div>
+              </div>
+            </div>
+
+            <details class="proposal-detail">
+              <summary>Đọc bản phân tích chi tiết vì sao nên đầu tư ngay lúc này</summary>
+              <p class="salutation">Thưa Mẹ,</p>
+              <p>
+                Ngày nay từ một cửa hàng bán đồ ăn, tiệm làm đẹp, shop bán hàng trực tuyến cho đến các công ty lớn đều bắt buộc phải có trang Web riêng để giới thiệu dịch vụ và bán hàng. Người biết thiết kế, lập trình và vận hành Website vì thế luôn có công việc ổn định, làm việc bằng chất xám và thu nhập rất tốt.
+              </p>
+              <p>
+                Điểm khác biệt lớn nhất của thời đại hiện nay là cách học nghề đã thay đổi hoàn toàn: thay vì đóng 15–20 triệu cho một khóa trung tâm học chậm theo giáo trình cũ, con có thể học trực tiếp cùng bộ 3 trí tuệ nhân tạo mạnh nhất thế giới (ChatGPT, Claude, Google Antigravity). Các công cụ này đóng vai trò như ba chuyên gia kỹ thuật hướng dẫn con xây dựng hệ thống dàn trang, thuật toán xử lý tương tác và mô phỏng đồ họa 3 chiều ngay tại bàn học. Chính trang web Mẹ đang lướt xem là minh chứng cụ thể cho trình độ con đang theo đuổi.
+              </p>
+              <p>
+                Tính trên mức lương khoảng 15 triệu đồng/tháng (500.000 ₫/ngày) của Mẹ, khoản đầu tư 10.000 ₫ mỗi ngày chỉ chiếm đúng 2% — chưa bằng 10 phút làm việc và thấp hơn cả một bữa ăn sáng. Đổi lại, con biến giờ rảnh buổi tối thành kỹ năng nghề có giá trị thật, xây dựng bộ hồ sơ năng lực vượt trội trước ngưỡng cửa đại học và hoàn toàn có thể tự nhận làm các trang Web giới thiệu cho cửa hàng để tự hoàn lại tiền đầu tư cho Mẹ.
+              </p>
+            </details>
+
+            <div class="letter-meta">
+              <span>
+                Lập ngày <span id="letter-date">25 tháng 11 năm 2026</span><br />
+                Hồ sơ đề xuất đầu tư học nghề do chính con tự thiết kế và lập trình.
+              </span>
+              <span class="signature">Khoản đầu tư tương lai</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="reasons">
+          <div class="reveal">
+            <h2>Ba giá trị bền vững<br />từ khoản đầu tư này.</h2>
+            <div class="study-switch" role="tablist" aria-label="Ba giá trị bền vững của việc học làm Web cùng AI">
+              <button
+                class="study-tab"
+                id="study-web"
+                type="button"
+                role="tab"
+                data-study="web"
+                aria-selected="true"
+                aria-controls="study-panel"
+                tabindex="0"
+              >
+                Làm chủ kỹ thuật dựng Web
+              </button>
+              <button
+                class="study-tab"
+                id="study-career"
+                type="button"
+                role="tab"
+                data-study="career"
+                aria-selected="false"
+                aria-controls="study-panel"
+                tabindex="-1"
+              >
+                Lợi thế nghề nghiệp dài hạn
+              </button>
+              <button
+                class="study-tab"
+                id="study-roi"
+                type="button"
+                role="tab"
+                data-study="roi"
+                aria-selected="false"
+                aria-controls="study-panel"
+                tabindex="-1"
+              >
+                Tạo thu nhập &amp; tự hoàn vốn
+              </button>
+            </div>
+          </div>
+
+          <div class="study-content reveal" id="study-panel" role="tabpanel" aria-labelledby="study-web" tabindex="0">
+            <h3 id="study-title">Tự tay xây dựng hoàn chỉnh một trang Web chạy thật.</h3>
+            <p id="study-description">
+              Con được rèn bài bản từ kiến trúc cấu trúc trang, mỹ thuật trình bày hiện đại, thuật toán xử lý tương tác cho đến đồ họa không gian 3 chiều trực tiếp trên trình duyệt. Nhờ có AI phân tích từng khối mã nguồn và sửa lỗi ngay lập tức, con vừa hiểu sâu nguyên lý vừa ra sản phẩm nhanh gấp nhiều lần cách học mò mẫm thông thường.
+            </p>
+            <figure class="study-workspace" aria-labelledby="study-map-caption">
+              <div class="study-tools">
+                <span id="study-tool-a">Kiến trúc &amp; Mỹ thuật Web</span>
+                <span id="study-tool-b">Thuật toán tương tác</span>
+                <span id="study-tool-c">Đồ họa 3 chiều thực tế</span>
+              </div>
+              <svg viewBox="0 0 480 52" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+                <path d="M80 0v22h320V0M240 0v49" />
+                <circle cx="240" cy="49" r="2.5" />
+              </svg>
+              <figcaption id="study-map-caption">
+                Học đến đâu có sản phẩm hoàn chỉnh chạy trên điện thoại và máy tính đến đó.
+              </figcaption>
+            </figure>
+            <p class="study-footnote" id="study-detail">
+              Kiểm chứng rõ ràng: mỗi Chủ Nhật con đều mở trang Web mới tự làm cho Mẹ xem trực tiếp.
+            </p>
+          </div>
+        </div>
+
+        <div class="roadmap reveal">
+          <h3>Lộ trình từ tự học<br />đến tự tạo thu nhập.</h3>
+          <ol>
+            <li>
+              <strong>Tháng thứ 1</strong>
+              <p>
+                Nắm chắc kiến trúc dàn trang chuẩn mực và logic tương tác; tự tay hoàn thiện tối thiểu 4 trang Web đầu tay (trang giới thiệu cá nhân, ứng dụng tính toán, giao diện trưng bày sản phẩm) để Mẹ nghiệm thu mỗi Chủ Nhật.
+              </p>
+            </li>
+            <li>
+              <strong>Tháng 2 – 3</strong>
+              <p>
+                Phối hợp thành thạo bộ 3 ChatGPT, Claude và Google Antigravity để xây dựng các Website hoàn chỉnh có hiệu ứng chuyển động mượt, hiển thị sắc nét trên mọi điện thoại và máy tính, tạo thành bộ hồ sơ dự án thực tế thuyết phục.
+              </p>
+            </li>
+            <li>
+              <strong>Từ tháng thứ 4</strong>
+              <p>
+                Đủ năng lực nhận thiết kế trang Web giới thiệu sản phẩm cho cửa hàng, tiệm kinh doanh hoặc doanh nghiệp nhỏ (2 – 5 triệu ₫/dự án) — tự hoàn lại toàn bộ khoản 10.000 ₫/ngày và tập tự lập tài chính bằng chính nghề mình học.
+              </p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           SECTION 02: PINNED SCROLL-DRIVEN 3D AI LOGO SHOWCASE (PURELY 3 AIs)
+           ================================================================ -->
+      <section id="congcu">
+        <div class="showcase-head reveal">
+          <h2>Ba công cụ AI<br />trong khoản đầu tư.</h2>
+          <p>
+            Mỗi trí tuệ nhân tạo phụ trách một công đoạn kỹ thuật riêng biệt trong dây chuyền làm Website chuyên nghiệp. Mẹ cuộn chuột xuống hoặc bấm từng logo để xoay xem mô hình 3D và vai trò cụ thể của từng công cụ.
+          </p>
+        </div>
+
+        <div class="product-story" id="product-story">
+          <div class="story-sticky">
+            <div class="showcase-shell">
+              <div
+                class="model-stage"
+                id="model-stage"
+                data-view="0"
+                role="group"
+                aria-label="Mô hình logo 3D của 3 công cụ AI ChatGPT, Claude và Google Antigravity, có thể kéo chuột xoay 360 độ"
+              >
+                <canvas class="webgl-stage-canvas" id="showcase-3d-canvas"></canvas>
+                <div class="stage-marker" aria-hidden="true">
+                  <svg class="stage-logo-mark" id="stage-logo-mark"><use id="stage-logo-use" href="#logo-openai" /></svg>
+                  <span id="stage-feature">ChatGPT</span>
+                  <span id="stage-feature-label">OpenAI · Giảng giải nguyên lý &amp; tư duy thuật toán 24/7</span>
+                </div>
+              </div>
+              <p class="showcase-caption">
+                Mô hình logo 3D tính toán thời gian thực trên đồ họa máy tính · Cuộn trang để đổi từng AI hoặc cầm chuột kéo xoay 360°.
+              </p>
+            </div>
+
+            <div class="hardware-copy">
+              <p class="story-instruction">Cuộn xuống để chuyển đổi 3 logo AI · Hoặc bấm chọn trực tiếp</p>
+              <h3 id="part-title">Người thầy giảng giải cặn kẽ mọi nguyên lý lập trình.</h3>
+              <p id="part-description">
+                Mỗi khi gặp một tính năng Web phức tạp hay một bài toán logic hóc búa, ChatGPT phân tích bản chất từng bước bằng ví dụ thực tế dễ hiểu, giúp con nắm chắc gốc rễ thuật toán và cấu trúc vận hành trước khi bắt tay vào xây dựng.
+              </p>
+
+              <div class="hardware-tabs" role="group" aria-label="Ba công cụ AI trong gói đầu tư">
+                <button class="hardware-tab" type="button" data-part="0" style="--tab-accent: #5ce6b8" aria-pressed="true">
+                  <span class="tab-brand">
+                    <svg class="tab-logo" aria-hidden="true"><use href="#logo-openai" /></svg>
+                    <span>ChatGPT · OpenAI</span>
+                  </span>
+                  <span aria-hidden="true">Nguyên lý &amp; Thuật toán</span>
+                </button>
+                <button class="hardware-tab" type="button" data-part="1" style="--tab-accent: #f09a7e" aria-pressed="false">
+                  <span class="tab-brand">
+                    <svg class="tab-logo" aria-hidden="true"><use href="#logo-claude" /></svg>
+                    <span>Claude · Anthropic</span>
+                  </span>
+                  <span aria-hidden="true">Mã nguồn &amp; Thẩm mỹ Web</span>
+                </button>
+                <button class="hardware-tab" type="button" data-part="2" style="--tab-accent: #84c5ff" aria-pressed="false">
+                  <span class="tab-brand">
+                    <svg class="tab-logo" aria-hidden="true"><use href="#logo-antigravity" /></svg>
+                    <span>Google Antigravity</span>
+                  </span>
+                  <span aria-hidden="true">Tự động dựng trọn dự án</span>
+                </button>
+              </div>
+
+              <p class="showcase-insight" id="showcase-insight">
+                Giống như có một kỹ sư lập trình giàu kinh nghiệm ngồi kèm riêng ngay tại bàn học.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Clean Split Live Workbench (#vibecode): Salary Ratio, Freelance Web ROI, 3D Light -->
+        <div class="live-workbench" id="vibecode">
+          <div class="workbench-copy reveal">
+            <h3>Nhìn thẳng vào hiệu quả<br />&amp; khả năng hoàn vốn.</h3>
+            <p>
+              Mẹ có thể bấm trực tiếp vào 3 bảng mô phỏng bên dưới — vừa kiểm tra tỷ lệ 10.000 ₫ so với thu nhập ngày của Mẹ, vừa thấy giá trị thực tế của một trang Web thương mại con có thể nhận làm sau này.
+            </p>
+            <div class="workbench-controls" role="group" aria-label="Ba bảng mô phỏng trực tiếp">
+              <button class="small-control" type="button" data-demo="ratio" aria-pressed="true">
+                10K so với lương ngày
+              </button>
+              <button class="small-control" type="button" data-demo="roi" aria-pressed="false">
+                Thu nhập khi nhận làm Web
+              </button>
+              <button class="small-control" type="button" data-demo="shader" aria-pressed="false">
+                Thử chỉnh ánh sáng 3D
+              </button>
+            </div>
+            <p class="workbench-lesson" id="workbench-lesson">
+              Tỷ lệ thực tế: với mức lương ~15 triệu ₫/tháng (500.000 ₫/ngày), 10.000 ₫ chỉ là 2% — giữ nguyên 98% thu nhập cho sinh hoạt gia đình.
+            </p>
+          </div>
+
+          <div class="workbench-stage reveal">
+            <div class="wb-bar">
+              <span id="wb-filename">ti-le-luong-ngay.js</span>
+              <div class="wb-view-switch" role="tablist" aria-label="Chế độ xem mô phỏng">
+                <button class="wb-view-btn" type="button" role="tab" data-wbview="live" aria-selected="true">
+                  Chạy thử trực tiếp
+                </button>
+                <button class="wb-view-btn" type="button" role="tab" data-wbview="code" aria-selected="false">
+                  Xem dòng lệnh xử lý
+                </button>
+              </div>
+            </div>
+            <div class="wb-body" id="wb-body">
+              <!-- Populated by site.js -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           SECTION 03: PLAN OPTIONS BAND
+           ================================================================ -->
+      <section class="configs-band" id="phuongan">
+        <div class="frame">
+          <div class="configs-head reveal">
+            <h2>Bắt đầu gọn nhẹ,<br />rủi ro gần như bằng 0.</h2>
+            <p>
+              Khác với học phí trung tâm bắt đóng trọn gói nhiều triệu đồng ngay từ đầu, khoản đầu tư này chia nhỏ đúng 10.000 ₫/ngày để Mẹ toàn quyền kiểm chứng kết quả thật trước khi duy trì tiếp.
+            </p>
+          </div>
+
+          <div class="configuration-options" role="group" aria-label="Chọn phương án cấp vốn">
+            <button class="choice" type="button" data-plan="0" aria-pressed="false">
+              <strong>Thử nghiệm 7 ngày đầu</strong>
+              <span>Chỉ 0,47% lương tháng của Mẹ<br />Nghiệm thu ngay 1 trang Web mới</span>
+              <span class="choice-price">70.000 ₫ / tuần</span>
+            </button>
+            <button class="choice" type="button" data-plan="1" aria-pressed="true">
+              <strong>Gói chuẩn · Đề xuất</strong>
+              <span>Chỉ 2% lương tháng (10K / 500K ngày)<br />Đủ bộ ChatGPT · Claude · Antigravity</span>
+              <span class="choice-price">10.000 ₫ / ngày</span>
+            </button>
+            <button class="choice" type="button" data-plan="2" aria-pressed="false">
+              <strong>Lộ trình 3 tháng vững nghề</strong>
+              <span>Hoàn thiện trọn bộ dự án Web thực tế<br />Đủ sức nhận việc tự hoàn lại vốn</span>
+              <span class="choice-price">300.000 ₫ / tháng</span>
+            </button>
+          </div>
+
+          <div class="config-reason">
+            <p id="plan-reason">
+              Gói chuẩn 300.000 ₫ mỗi tháng chỉ chiếm đúng 2% trong tổng thu nhập 15.000.000 ₫ — để nguyên 14.700.000 ₫ cho gia đình, trong khi Mẹ vẫn giữ toàn quyền dừng cấp vốn bất kỳ lúc nào nếu con không có sản phẩm mới.
+            </p>
+            <a class="text-link" href="#chiphi">
+              Xem đối chiếu chi tiết theo lương tháng
+              <svg class="arrow" aria-hidden="true"><use href="#arrow" /></svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           SECTION 04: 15M SALARY RATIO & TRANSPARENT BUDGET WORKSHEET
+           ================================================================ -->
+      <section class="budget frame" id="chiphi">
+        <div class="budget-opening reveal">
+          <h2>10.000 ₫ mỗi ngày<br />so với lương của Mẹ.</h2>
+          <p>
+            Con quy đổi minh bạch trên mốc thu nhập ~15.000.000 ₫/tháng (500.000 ₫/ngày) để Mẹ thấy con số thực tế nhẹ đến mức nào so với giá trị nghề nghiệp và cơ hội sinh lời về sau.
+          </p>
+        </div>
+
+        <!-- Dedicated Daily & Monthly Income Proportion Strip -->
+        <div class="income-ratio-strip reveal" aria-label="Đối chiếu 10.000 đồng mỗi ngày với mức lương 15 triệu đồng mỗi tháng của Mẹ">
+          <div class="ratio-cards">
+            <div class="ratio-metric">
+              <span class="ratio-label">Thu nhập 1 ngày của Mẹ (mốc 15 triệu / 30 ngày)</span>
+              <strong>500.000 ₫</strong>
+            </div>
+            <div class="ratio-metric accent">
+              <span class="ratio-label">Khoản đầu tư bộ 3 AI mỗi ngày</span>
+              <strong>10.000 ₫ <span>(chỉ 2%)</span></strong>
+            </div>
+            <div class="ratio-metric">
+              <span class="ratio-label">Quy đổi theo thời gian làm việc 8 tiếng/ngày</span>
+              <strong>~10 phút <span>/ 480 phút</span></strong>
+            </div>
+            <div class="ratio-metric warm">
+              <span class="ratio-label">1 trang Web bán hàng sau này (2.000.000 ₫)</span>
+              <strong>Hoàn vốn 6,6 tháng</strong>
+            </div>
+          </div>
+
+          <div class="ratio-visual">
+            <div class="ratio-bar-head">
+              <span>Khoản đầu tư AI: <strong id="ratio-bar-ai-text">2% (300.000 ₫ / tháng)</strong></span>
+              <span>Ngân sách gia đình giữ nguyên: <strong id="ratio-bar-keep-text">98% (14.700.000 ₫)</strong></span>
+            </div>
+            <div class="ratio-bar" role="img" aria-label="Thanh tỷ lệ: 2 phần trăm dành cho khoản đầu tư AI, 98 phần trăm ngân sách gia đình giữ nguyên">
+              <span class="ratio-bar-ai"></span>
+              <span class="ratio-bar-keep"></span>
+            </div>
+          </div>
+        </div>
+
+        <form class="worksheet reveal" aria-label="Bảng ước tính ngân sách đầu tư theo thời gian" onsubmit="return false;">
+          <div class="budget-total">
+            <p class="budget-selected" id="budget-selected">
+              Định mức cố định · 2% thu nhập ngày (10.000 ₫ / 500.000 ₫)
+            </p>
+            <div class="total-price" id="total-price">300.000 ₫</div>
+            <p id="budget-equivalent">
+              Chiếm đúng 2% trong 15.000.000 ₫ thu nhập 30 ngày của Mẹ — giữ nguyên 14.700.000 ₫ (98%) cho gia đình và chỉ tương đương chưa đầy 2 buổi học gia sư bên ngoài.
+            </p>
+            <div class="total-footer">
+              <strong id="committed-output">Cam kết tối thiểu 4 sản phẩm Web</strong>
+              <p id="roi-payback-note">
+                Chỉ cần nhận 1 trang Web giới thiệu cơ bản (2.000.000 ₫) sau khi thành thạo là thu hồi gấp 6,7 lần toàn bộ khoản đầu tư này.
+              </p>
+            </div>
+          </div>
+
+          <div class="budget-calc">
+            <label class="range-label" for="days-range">
+              <span>Thời gian Mẹ đầu tư thử nghiệm</span>
+              <output id="days-output" for="days-range">30 ngày</output>
+            </label>
+            <input
+              type="range"
+              id="days-range"
+              min="7"
+              max="180"
+              step="1"
+              value="30"
+            />
+            <div class="terms" role="group" aria-label="Chọn nhanh số ngày">
+              <button class="term" data-days="7" type="button" aria-pressed="false">7 ngày</button>
+              <button class="term" data-days="14" type="button" aria-pressed="false">14 ngày</button>
+              <button class="term" data-days="30" type="button" aria-pressed="true">1 tháng</button>
+              <button class="term" data-days="60" type="button" aria-pressed="false">2 tháng</button>
+              <button class="term" data-days="90" type="button" aria-pressed="false">3 tháng</button>
+              <button class="term" data-days="180" type="button" aria-pressed="false">6 tháng</button>
+            </div>
+            <p class="monthly-label">Tỷ lệ cố định trên thu nhập 1 ngày (500.000 ₫)</p>
+            <output class="monthly" id="daily-rate-display" for="days-range">
+              10.000 <span>₫ / ngày · chỉ 2%</span>
+            </output>
+            <p id="milestone-summary">
+              Sau 30 ngày: nắm chắc kiến trúc dàn trang, thuật toán tương tác và tự dựng hoàn chỉnh các trang Web chạy thật trên điện thoại và máy tính.
+            </p>
+          </div>
+        </form>
+
+        <details class="comparison-details" id="sosanh" open>
+          <summary>Đối chiếu với bản AI miễn phí và khóa học trung tâm bên ngoài</summary>
+          <div class="table-wrap" tabindex="0" role="region" aria-label="Bảng đối chiếu hiệu quả đầu tư học làm Web">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Tiêu chí đối chiếu</th>
+                  <th scope="col">Bản AI miễn phí</th>
+                  <th scope="col" class="selected-col">Đầu tư 10K / ngày</th>
+                  <th scope="col">Trung tâm lập trình bên ngoài</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Chi phí / Tỷ lệ lương 15 triệu</th>
+                  <td>0 ₫ (0%)</td>
+                  <td class="selected-col">300.000 ₫ (chỉ 2% lương tháng)</td>
+                  <td>2.500.000 – 3.500.000 ₫ (~20% lương tháng)</td>
+                </tr>
+                <tr>
+                  <th scope="row">Tốc độ tạo sản phẩm Web thật</th>
+                  <td>Chậm, bị khóa lượt giữa chừng</td>
+                  <td class="selected-col">Thực hành 24/7 tại nhà, ra Web mới mỗi tuần</td>
+                  <td>2 buổi/tuần theo giáo trình chung, ít dự án thật</td>
+                </tr>
+                <tr>
+                  <th scope="row">Khả năng làm nghề &amp; hoàn vốn</th>
+                  <td>Rất khó dựng trọn dự án nhiều tệp</td>
+                  <td class="selected-col">Đủ bộ Claude · ChatGPT · Antigravity làm Web thương mại</td>
+                  <td>Mất 6–12 tháng mới bù lại học phí đã đóng</td>
+                </tr>
+                <tr>
+                  <th scope="row">Rủi ro tài chính cho Mẹ</th>
+                  <td>Không tốn tiền nhưng tốn thời gian, dễ nản bỏ dở</td>
+                  <td class="selected-col">Cực thấp, có thể dừng bất kỳ tuần nào</td>
+                  <td>Phải đóng trọn khóa 10 – 20 triệu ngay từ đầu</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </details>
+      </section>
+
+      <!-- ================================================================
+           SECTION 05: COMMITMENTS & Q&A WITH MOM
+           ================================================================ -->
+      <section class="section frame" id="camket">
+        <div class="promises">
+          <div class="reveal">
+            <h2>Kỷ luật &amp; sản phẩm<br />là thước đo cam kết.</h2>
+            <p class="grade-intro">
+              Khoản đầu tư 10.000 ₫ mỗi ngày chỉ tiếp tục duy trì khi con giữ vững thành tích học chính khóa trên trường và cho Mẹ thấy sản phẩm Web mới rõ ràng vào mỗi cuối tuần.
+            </p>
+            <div class="commitment-markers">
+              <div>
+                <strong>23:00</strong>
+                <span>Giờ tắt máy muộn nhất mỗi tối</span>
+              </div>
+              <div>
+                <strong>Chủ Nhật</strong>
+                <span>Mở sản phẩm Web mới nghiệm thu cùng Mẹ</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="commitment-summary reveal">
+            <ol class="review-cycle">
+              <li>
+                <strong>Giữ vững kết quả học chính khóa trên trường</strong>
+                <p>Không dùng AI đối phó bài tập; bài vở trên lớp luôn được ưu tiên hoàn thành trước khi ngồi thực hành làm Web.</p>
+              </li>
+              <li>
+                <strong>Mỗi tuần một sản phẩm chạy thật trên máy</strong>
+                <p>Cuối mỗi tuần con đều mở trang Web hoặc tính năng mới tự làm cho Mẹ xem và bấm dùng thử trực tiếp.</p>
+              </li>
+              <li>
+                <strong>Mẹ giữ toàn quyền dừng cấp vốn ngay lập tức</strong>
+                <p>Nếu điểm số giảm sút hoặc hai tuần liên tiếp không có sản phẩm mới, con tự giác ngưng nhận hỗ trợ.</p>
+              </li>
+            </ol>
+
+            <details class="proposal-detail">
+              <summary>Xem nguyên tắc quản lý thời gian và cách con học cùng AI</summary>
+              <p style="margin-top: 16px;">
+                Con dùng AI như một chuyên gia hướng dẫn chứ tuyệt đối không sao chép mù quáng: với mỗi cấu trúc giao diện hay thuật toán xử lý, con yêu cầu AI giải thích rõ nguyên lý rồi tự tay điều chỉnh, kiểm tra lỗi để biến thành tay nghề thực sự của mình.
+              </p>
+              <p>
+                Quỹ thời gian 45–60 phút thực hành mỗi tối được chuyển đổi trực tiếp từ thời gian rảnh trước đây dành cho việc lướt mạng thụ động, nên không ảnh hưởng đến giấc ngủ, sức khỏe hay nếp sinh hoạt gia đình.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <section class="section frame" id="giaidap">
+        <div class="questions">
+          <h2 class="reveal">Những băn khoăn<br />Mẹ có thể đặt ra.</h2>
+          <div class="reveal">
+            <details>
+              <summary>Học làm Web từ sớm sau này làm được những công việc gì và có kiếm được tiền không?</summary>
+              <p>
+                Nghề thiết kế và lập trình Website mở ra rất nhiều hướng đi bền vững: làm kỹ sư xây dựng giao diện Web và đồ họa tương tác tại các công ty công nghệ, phụ trách hệ thống trang Web cho doanh nghiệp, hoặc nhận thiết kế Website độc lập cho cửa hàng bán hàng trực tuyến. Khi đã cứng tay sau vài tháng, chỉ một trang Web giới thiệu sản phẩm cơ bản trên thị trường đã có giá từ 2 đến 3 triệu đồng — đủ hoàn vốn nhiều tháng tiền AI.
+              </p>
+            </details>
+            <details>
+              <summary>Đầu tư sớm lúc này có thật sự cần thiết hơn là đợi lên đại học mới học không?</summary>
+              <p>
+                Thị trường công nghệ thay đổi rất nhanh; hiện nay phần lớn sinh viên đại học vẫn học kiến thức nền chậm hơn thực tế bên ngoài. Khi con tiếp cận đúng công cụ trí tuệ nhân tạo và tự làm ra sản phẩm Web hoàn chỉnh ngay từ bây giờ, con sẽ có lợi thế đi trước 2–3 năm, dễ xin học bổng, đi thực tập sớm và tự chủ hơn hẳn khi bước vào đại học.
+              </p>
+            </details>
+            <details>
+              <summary>Tại sao không dùng bản AI miễn phí mà cần bỏ 10.000 ₫ mỗi ngày?</summary>
+              <p>
+                Bản miễn phí chỉ trả lời các câu hỏi ngắn và khóa lượt liên tục khi làm việc với một trang Web hoàn chỉnh gồm nhiều tệp mã nguồn và đồ họa 3D. Khoản 10.000 ₫/ngày (chỉ 2% lương ngày của Mẹ) mở khóa trọn bộ ChatGPT, Claude và Google Antigravity bản chuẩn để quá trình học nghề liền mạch, ra sản phẩm chất lượng thật sự.
+              </p>
+            </details>
+            <details>
+              <summary>Nhỡ con chỉ hào hứng vài ngày đầu rồi bỏ dở thì có phí tiền không?</summary>
+              <p>
+                Để Mẹ hoàn toàn yên tâm, con đã để sẵn phương án thử nghiệm 7 ngày đầu tiên với tổng chi phí chỉ 70.000 ₫ (chưa tới 0,5% lương tháng). Hết đúng một tuần, nếu Mẹ thấy con ngồi học nghiêm túc và mở được trang Web mới rõ ràng thì Mẹ mới quyết định duy trì theo tháng.
+              </p>
+            </details>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================================================================
+           SECTION 06: RESPECTFUL CLOSING INVESTMENT DECISION
+           ================================================================ -->
+      <section class="closing" id="quyetdinh">
+        <div class="frame closing-inner">
+          <div class="reveal">
+            <h2>Khoản đầu tư nhỏ hôm nay,<br />nền tảng vững chắc ngày mai.</h2>
+            <p>
+              Chỉ với 10.000 ₫ mỗi ngày — đúng 2% thu nhập ngày của Mẹ — con có trọn bộ công cụ trí tuệ nhân tạo hàng đầu để học một nghề kỹ thuật thực tế, biến giờ rảnh thành kỹ năng sinh lời và sở hữu bộ dự án hoàn chỉnh từ sớm. Con xin lấy thành tích học tập và sản phẩm nghiệm thu mỗi Chủ Nhật làm cam kết rõ ràng nhất.
+            </p>
+            <span class="signature">Kính mong Mẹ tin tưởng.</span>
+          </div>
+
+          <div class="reveal">
+            <div class="decision-actions">
+              <button class="button" id="agree-standard" type="button">
+                Duyệt đầu tư 10.000 ₫ / ngày
+                <svg class="arrow" aria-hidden="true"><use href="#arrow" /></svg>
+              </button>
+              <button class="button secondary" id="agree-trial" type="button">
+                Thử nghiệm 7 ngày (70.000 ₫)
+              </button>
+              <button
+                class="button secondary"
+                id="discuss-btn"
+                type="button"
+                aria-expanded="false"
+                aria-controls="discussion"
+              >
+                Trao đổi thêm
+              </button>
+            </div>
+
+            <div class="decision-result" id="decision-result" role="status" aria-live="polite"></div>
+
+            <div class="discussion" id="discussion" hidden>
+              <p>Mẹ muốn con làm rõ thêm điểm nào trước khi chốt?</p>
+              <div class="discussion-options">
+                <button class="small-control" type="button" data-topic="kết quả học trên lớp" aria-pressed="false">
+                  Điểm số trên lớp
+                </button>
+                <button class="small-control" type="button" data-topic="giờ giấc ngồi máy buổi tối" aria-pressed="false">
+                  Giờ sử dụng máy
+                </button>
+                <button class="small-control" type="button" data-topic="cách nghiệm thu sản phẩm Web mỗi Chủ Nhật" aria-pressed="false">
+                  Nghiệm thu cuối tuần
+                </button>
+                <button class="small-control" type="button" data-topic="lộ trình nhận dự án và hoàn vốn" aria-pressed="false">
+                  Lộ trình hoàn vốn
+                </button>
+              </div>
+            </div>
+
+            <p class="decision-local">
+              Lựa chọn hiển thị trực tiếp ngay trên trang để hai mẹ con thống nhất kế hoạch thực hiện.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer frame">
+      <a class="brand" href="#">Khoản Đầu Tư Cho Tương Lai.</a>
+      <p>
+        Đề xuất khoản đầu tư 10.000 ₫ / ngày (2% thu nhập ngày) cho lộ trình học nghề thiết kế &amp; lập trình Web cùng AI.<br />
+        Trang Web tương tác 3D minh chứng trực tiếp cho năng lực và sự nghiêm túc của người đề xuất.
+      </p>
+      <a class="text-link" href="#">
+        Về đầu trang
+        <svg class="arrow" aria-hidden="true"><use href="#arrow" /></svg>
+      </a>
+    </footer>
+
+    <button
+      class="stealth-role-switch"
+      id="stealth-role-switch"
+      type="button"
+      aria-label="Chuyển đổi người nhận"
+    ></button>
+  </body>
+</html>
