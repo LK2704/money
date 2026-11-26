@@ -29,6 +29,12 @@
   let celebrationTime = 0;
 
   function computePath() {
+    if (window.innerWidth <= 960) {
+      xs = [];
+      ys = [];
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      return;
+    }
     width = window.innerWidth;
     height = window.innerHeight;
     dpr = Math.min(window.devicePixelRatio || 1, 1.35);
