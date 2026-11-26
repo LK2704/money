@@ -377,7 +377,7 @@
                 <strong>${fmtVnd(income)}</strong>
               </div>
               <div class="demo-ledger-row">
-                <span>Khoản đầu tư bộ 3 AI học làm Web (2%)</span>
+                <span>Khoản đầu tư gói Claude học làm Web (2%)</span>
                 <strong style="color:var(--signal)">${fmtVnd(aiCost)}</strong>
               </div>
               <div class="demo-ledger-row">
