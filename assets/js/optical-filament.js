@@ -29,7 +29,7 @@
   let celebrationTime = 0;
 
   function computePath() {
-    width = window.innerWidth;
+    width = document.documentElement.clientWidth || window.innerWidth;
     height = window.innerHeight;
     dpr = Math.min(window.devicePixelRatio || 1, width <= 768 ? 1.75 : 1.35);
     canvas.width = Math.round(width * dpr);
@@ -38,8 +38,14 @@
 
     const desktop = width > 1080;
     const scroll = window.scrollY;
-    const anchors = [];
+    const marginX = desktop ? Math.max(24, Math.min(54, width * 0.032)) : 10;
+    const leftMarginX = marginX;
+    const rightMarginX = width - marginX;
+
+    const segments = [];
     let side = -1;
+    let prevX = leftMarginX;
+    let prevY = 0;
 
     stops.forEach((sec, idx) => {
       const r = sec.getBoundingClientRect();
@@ -49,50 +55,41 @@
       const padTop = parseFloat(st.paddingTop) || 0;
       const startY = top + padTop;
 
-      const leftMarginX = Math.max(16, Math.min(54, width * 0.032));
-      const rightMarginX = Math.min(width - 16, Math.max(width - 54, width * 0.968));
-
       if (idx > 0 && desktop) side = -side;
-      const targetX = desktop ? (side < 0 ? leftMarginX : rightMarginX) : 10;
+      const targetX = desktop ? (side < 0 ? leftMarginX : rightMarginX) : leftMarginX;
 
       if (idx === 0) {
-        anchors.push({ x: targetX, y: Math.max(0, top - 120) });
-        anchors.push({ x: targetX, y: startY });
+        prevX = targetX;
+        prevY = Math.max(0, top - 120);
+        segments.push({ x0: prevX, y0: prevY, x1: targetX, y1: startY, curve: false });
       } else {
-        const prev = anchors[anchors.length - 1];
-        if (desktop && Math.abs(prev.x - targetX) > width * 0.4 && padTop > 100) {
-          anchors.push({ x: prev.x + (targetX - prev.x) * 0.35, y: top + padTop * 0.36 });
-          anchors.push({ x: prev.x + (targetX - prev.x) * 0.68, y: top + padTop * 0.66 });
-        }
-        anchors.push({ x: targetX, y: startY });
+        const swoop = desktop && Math.abs(prevX - targetX) > 1;
+        segments.push({ x0: prevX, y0: prevY, x1: targetX, y1: startY, curve: swoop });
       }
 
-      anchors.push({ x: targetX, y: bottom });
+      segments.push({ x0: targetX, y0: startY, x1: targetX, y1: bottom, curve: false });
+      prevX = targetX;
+      prevY = bottom;
     });
 
-    const last = anchors[anchors.length - 1] || { x: 24, y: 1000 };
-    anchors.push({ x: last.x, y: last.y + 200 });
+    segments.push({ x0: prevX, y0: prevY, x1: prevX, y1: prevY + 200, curve: false });
 
-    // Catmull-Rom spline interpolation
+    // Overshoot-free C2 quintic S-curve for horizontal swoops, strict vertical rails elsewhere
     const denseX = [];
     const denseY = [];
-    for (let i = 0; i < anchors.length - 1; i++) {
-      const a = anchors[Math.max(0, i - 1)];
-      const b = anchors[i];
-      const c = anchors[i + 1];
-      const d = anchors[Math.min(anchors.length - 1, i + 2)];
-      for (let s = 0; s < 1; s += 1 / 28) {
-        const s2 = s * s;
-        const s3 = s2 * s;
-        const interp = (q0, q1, q2, q3) =>
-          0.5 *
-          (2 * q1 +
-            (q2 - q0) * s +
-            (2 * q0 - 5 * q1 + 4 * q2 - q3) * s2 +
-            (3 * q1 - q0 - 3 * q2 + q3) * s3);
-        denseX.push(interp(a.x, b.x, c.x, d.x));
-        denseY.push(interp(a.y, b.y, c.y, d.y));
+    for (const seg of segments) {
+      const steps = seg.curve ? 48 : Math.max(2, Math.ceil(Math.abs(seg.y1 - seg.y0) / 36));
+      for (let k = 0; k < steps; k++) {
+        const s = k / steps;
+        const easeX = seg.curve ? s * s * s * (s * (s * 6 - 15) + 10) : s;
+        denseX.push(seg.x0 + (seg.x1 - seg.x0) * easeX);
+        denseY.push(seg.y0 + (seg.y1 - seg.y0) * s);
       }
+    }
+    const lastSeg = segments[segments.length - 1];
+    if (lastSeg) {
+      denseX.push(lastSeg.x1);
+      denseY.push(lastSeg.y1);
     }
 
     // Resample every 8px
@@ -156,8 +153,8 @@
         ctx.globalAlpha = st.alpha;
         ctx.beginPath();
         for (let i = first; i <= last; i += 2) {
-          const braid = Math.sin(i * 0.035 + st.phase + (reduced.matches ? 0 : now * 0.0012)) * (mobile ? 2.0 : 9);
-          const px = xs[i] + braid;
+          const braid = Math.sin(i * 0.035 + st.phase + (reduced.matches ? 0 : now * 0.0012)) * (mobile ? 2.0 : 7);
+          const px = Math.max(6, Math.min(width - 6, xs[i] + braid));
           const py = ys[i];
           if (i === first) ctx.moveTo(px, py);
           else ctx.lineTo(px, py);
